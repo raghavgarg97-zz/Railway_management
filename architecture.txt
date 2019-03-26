@@ -1,0 +1,41 @@
+No of Coach Types- X
+
+1) TRAIN_INFO
+	- Train_no
+	- Train_name
+	- Source_Station_no
+	- Destination_Station_no
+	- Distance
+	- Train_type
+	- Track_Type
+
+2) TRAIN_SCHEDULE
+	- Train_no
+	- X coloumns of coach type with binary values
+	- X coloums for fare of each coach
+
+3) STATIONS
+	- Station_no
+	- Station_name
+	- Station_master
+	- no_of_platforms
+
+4) RAILWAY_PATH
+	- Train_no
+	- previous_station_no
+	- Station_no
+	- Distance
+	- Arrival Time
+	- Departure Time
+	- 7 coloumns for day and time
+
+5) COACH_DETAILS
+	- Coach_type
+	- AC/NonAC
+	- Nature_of_coach(Seater/Sleeper/Goods/Pantry)
+	- Layout_no
+	- Total_available_seats
+
+6) All_possible_paths
+	- Station_no_1
+	- Station_no_2
