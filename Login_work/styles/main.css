@@ -1,0 +1,52 @@
+/*
+Copyright (C) 2013 peter
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
+    Created on : 11-dic-2013, 18:06:39
+    Author     : peter
+*/
+
+/* Show error messages in red */
+
+.error { color: red; }
+
+.bar{
+  background-color: #ddd;
+  border-radius: 2%;
+}
+#score5 {width: 99%; background-color: #1fef48; color: #1fef48;}
+#score4 {width: 80%; background-color: #1fef48; color: #1fef48;}
+#score3 {width: 60%; background-color: #ebf438; color: #ebf438;}
+#score2 {width: 50%; background-color: #f7b24a; color: #f7b24a;}
+#score1 {width: 30%; background-color: #f44336; color: #f44336;}
+#score0 {width: 15%; background-color: #f44336; color: #f44336;}
+
+.registration_form {
+  border-style: groove;
+  margin-top: 30px;
+  margin-left: 100px;
+  padding-top: 15px;
+  padding-left: 50px;
+  width: 900px;
+  border-radius: 20px;
+  box-shadow: 5px 5px #888888;
+}
+
+#register_button {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
