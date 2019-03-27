@@ -1,7 +1,7 @@
 No of Coach Types- X
 
 1) TRAIN_INFO
-	- Train_no
+	--- Train_no
 	- Train_name
 	- Source_Station_no
 	- Destination_Station_no
@@ -10,32 +10,67 @@ No of Coach Types- X
 	- Track_Type
 
 2) TRAIN_SCHEDULE
-	- Train_no
+	--- Train_no
 	- X coloumns of coach type with binary values
 	- X coloums for fare of each coach
 
 3) STATIONS
-	- Station_no
+	--- Station_no
 	- Station_name
 	- Station_master
 	- no_of_platforms
 
 4) RAILWAY_PATH
-	- Train_no
+	--- Train_no
+	--- Station_no
 	- previous_station_no
-	- Station_no
 	- Distance
+	- Sequence number
 	- Arrival Time
 	- Departure Time
 	- 7 coloumns for day and time
+	- Day_offset
 
 5) COACH_DETAILS
-	- Coach_type
+	--- Coach_type
 	- AC/NonAC
 	- Nature_of_coach(Seater/Sleeper/Goods/Pantry)
 	- Layout_no
 	- Total_available_seats
 
 6) All_possible_paths
-	- Station_no_1
-	- Station_no_2
+	--- Station_no_1
+	--- Station_no_2
+
+
+7) TICKET_AVAILABILITY
+	--- Train_no
+	--- Date
+	--- Coach_type
+	--- Station_no
+	- Total_available_seats
+
+8) BOOKING
+	--- PNR_no
+	- Name
+	- Age
+	- DOB
+	- Gender
+	- Insurance_AV/No
+	- Train_no
+	- Coach_Type
+	- Coach_No
+	- Seat_No
+	- Source_station_no
+	- Destination_station_no
+	- Boarding_Date
+	- Booking_Status
+
+
+9) OVERALL_WAITING
+	- PNR_no
+	--- Train_no
+	--- Date
+	--- Coach_Type
+	--- W.L.no
+	
