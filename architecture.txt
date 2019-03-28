@@ -6,7 +6,6 @@ No of Coach Types- X
 	- Source_Station_no
 	- Destination_Station_no
 	- Distance
-	- Train_type
 	- Track_Type
 
 2) TRAIN_SCHEDULE
@@ -17,6 +16,7 @@ No of Coach Types- X
 3) STATIONS
 	--- Station_no
 	- Station_name
+	- City
 	- Station_master
 	- no_of_platforms
 
