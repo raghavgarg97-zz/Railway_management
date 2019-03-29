@@ -69,7 +69,7 @@ No of Coach Types- X
 
 
 9) OVERALL_WAITING
-	--- PNR_no
+	- PNR_no
 	--- Train_no
 	--- Date
 	--- Coach_Type
