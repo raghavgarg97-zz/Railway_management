@@ -48,44 +48,30 @@
 					<div class="booking-form">
 						<div class="booking-bg">
 							<div class="form-header">
-								<h2>Book Your Train</h2>
+								<h2>Enter your information</h2>
 								<p>Come In As Guests. Leave As Family.</p>
 							</div>
 						</div>
-
-						<?php
-							$username = $_GET['username'];
-						?>
 						
-						<form action="includes/train_list.php?username=<?php echo $username;?>" method="post">
+						<form action="booking_data.php" method="post">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="sel1">Source:</label>
-										  <select class="form-control" name="sel1">
-										    <option>CNB</option>
-										    <option>NDLS</option>
-										    <option>GZB</option>
-										    <option>Etawah</option>
-										  </select>
+										<label for="sel1">Name:</label>
+										<input type="text" name="firstname"><br>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="sel2">Destination:</label>
-										  <select class="form-control" name="sel2">
-										    <option>CNB</option>
-										    <option>NDLS</option>
-										    <option>GZB</option>
-										    <option>Etawah</option>
-										  </select>
+										<label for="sel2">Age:</label>
+										  <input type="text" name="age"><br>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-									<label for="sel3">Pick Date:</label>
+									<label for="sel3">DOB:</label>
 										<div class='input-group date' id='datetimepicker1'>
 						                    <input type='text' class="form-control" id="date-daily" name="date" />
 						                    <span class="input-group-addon">
@@ -104,23 +90,28 @@
 
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="sel4">Select Class:</label>
+										<label for="sel4">Gender:</label>
 										  <select class="form-control" name="sel3">
-										    <option>CC</option>
-										    <option>EC</option>
-										    <option>3AC</option>
-										    <option>2AC</option>
-										    <option>1AC</option>
-										    <option>SL</option>
-										    <option>GN</option>
-										    <option>2S</option>
+										    <option>Male</option>
+										    <option>Female</option>
+										    <option>Other</option>
 										  </select>
 									</div>
 								</div>
 							</div>
+
+							<div class="form-group">
+								<span class="form-label">Insurance AV</span>
+								<select class="form-control" required>
+									<option value="" selected hidden>Do you want insurance?</option>
+									<option>0</option>
+									<option>1</option>
+								</select>
+								<span class="select-arrow"></span>
+							</div>
 							
 							<div class="form-btn">
-								<button class="submit-btn">Check Trains</button>
+								<button class="submit-btn">Book Ticket</button>
 							</div>
 						</form>
 					</div>
