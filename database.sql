@@ -86,11 +86,11 @@ FOREIGN key(station_no_2) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON D
 
 CREATE TABLE TICKET_AVAILABLITY(
 Train_no int,
-Date DATE,
+Dates DATE,
 Coach_Type varchar(10),
 Station_no int,
 Total_available_seats int,
-PRIMARY KEY(Train_no,Date,Coach_Type,Station_no),
+PRIMARY KEY(Train_no,Dates,Coach_Type,Station_no),
 FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN key(Station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE ON DELETE CASCADE
@@ -121,11 +121,20 @@ FOREIGN key(Destination_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CA
 CREATE TABLE OVERALL_WAITING(
 PNR_no int,
 Train_no int,
-Date DATE,
+Dates DATE,
 Coach_Type varchar(10),
 WL_no int,
-PRIMARY KEY(PNR_no,Train_no,Date,Coach_Type,WL_no),
+PRIMARY KEY(Train_no,Dates,Coach_Type,WL_no),
 FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN key(PNR_no) REFERENCES BOOKING(PNR_no) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+DELIMITER //
+CREATE TRIGGER railway_graph_check BEFORE INSERT ON RAILWAY_PATH
+FOR EACH ROW BEGIN
+IF (SELECT A.Station_no_1 from ALL_POSSIBLE_PATHS as A  where A.Station_no_1=NEW.Station_no and A.Station_no_2 = NEW.previous_station_no) IS NULL THEN
+CALL raise_error;
+END IF;
+END;//
+DELIMITER ;
