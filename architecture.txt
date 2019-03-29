@@ -52,11 +52,12 @@ No of Coach Types- X
 
 8) BOOKING
 	--- PNR_no
+	- Username
 	- Name
 	- Age
 	- DOB
 	- Gender
-	- Insurance_AV/No
+	- Insurance_AV
 	- Train_no
 	- Coach_Type
 	- Coach_No
@@ -68,10 +69,10 @@ No of Coach Types- X
 
 
 9) OVERALL_WAITING
-	- PNR_no
+	--- PNR_no
 	--- Train_no
 	--- Date
 	--- Coach_Type
-	--- W.L.no
+	--- WL_no
 	
-	
+	 

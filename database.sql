@@ -3,13 +3,16 @@ CREATE DATABASE RAILWAY_MANAGEMENT;
 USE RAILWAY_MANAGEMENT;
 
 /* Using 6 different Coach Layouts 3X2,2X2,6X2,4X2,individual_rooms,other(for pantry/sleeper)*/
-CREATE TABLE STATIONS(Station_no int PRIMARY KEY,
+CREATE TABLE STATIONS(
+Station_no int PRIMARY KEY,
 Station_name varchar(30),
 City varchar(30),
 Station_master varchar(30),
-no_of_platforms int);
+no_of_platforms int
+);
 
-CREATE TABLE COACH_DETAILS(Coach_Type int PRIMARY KEY,
+CREATE TABLE COACH_DETAILS(
+Coach_Type int PRIMARY KEY,
 AC BOOLEAN,
 Nature_of_coach varchar(10) CHECK(Nature_of_coach IN ("Seater","Sleeper","Goods","Pantry")),
 Layout_no int,
@@ -21,12 +24,12 @@ INSERT INTO COACH_DETAILS values(2,true,"Seater",2,80);
 INSERT INTO COACH_DETAILS values(3,true,"Sleeper",3,40);
 INSERT INTO COACH_DETAILS values(4,true,"Sleeper",4,30);
 INSERT INTO COACH_DETAILS values(5,true,"Sleeper",5,20);
-
 INSERT INTO COACH_DETAILS values(6,false,"Seater",1,80);
 INSERT INTO COACH_DETAILS values(7,false,"Pantry",6,0);
 INSERT INTO COACH_DETAILS values(8,false,"Goods",6,0);
 
-CREATE TABLE TRAIN_INFO(Train_no int PRIMARY KEY,
+CREATE TABLE TRAIN_INFO(
+Train_no int PRIMARY KEY,
 Train_name varchar(30),
 Source_station_no int,
 Destination_station_no int,
@@ -36,7 +39,8 @@ FOREIGN key(Source_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE
 FOREIGN key(Destination_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE TRAIN_SCHEDULE(Train_no int PRIMARY KEY,
+CREATE TABLE TRAIN_SCHEDULE(
+Train_no int PRIMARY KEY,
 Coach_1_quantity int,Coach_1_price int,
 Coach_2_quantity int,Coach_2_price int,
 Coach_3_quantity int,Coach_3_price int,
@@ -48,7 +52,8 @@ Coach_8_quantity int,Coach_8_price int,
 FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE RAILWAY_PATH(Train_no int ,
+CREATE TABLE RAILWAY_PATH(
+Train_no int,
 Station_no int, 
 previous_station_no int,
 Distance int,
@@ -69,9 +74,56 @@ FOREIGN key(previous_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCA
 FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE ALL_POSSIBLE_PATHS(Station_no_1 int,
+CREATE TABLE ALL_POSSIBLE_PATHS(
+Station_no_1 int,
 Station_no_2 int,
 PRIMARY KEY(Station_no_2,Station_no_1),
 FOREIGN key(Station_no_1) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN key(station_no_2) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE TICKET_AVAILABLITY(
+Train_no int,
+Date DATE,
+Coach_Type int,
+Station_no int,
+Total_available_seats int,
+PRIMARY KEY(Train_no,Date,Coach_Type,Station_no),
+FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN key(Station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE BOOKING(
+PNR_no int PRIMARY KEY,
+Username varchar(30),
+Name varchar(30),
+Age int,
+DOB DATE,
+Gender varchar(10) CHECK(Gender in ('M','F','Other')),
+Insurance_AV int,
+Train_no int,
+Coach_Type int,
+Coach_no int,
+Seat_no int,
+Source_station_no int,
+Destination_station_no int,
+Boarding_Date DATE,
+Booking_Status varchar(10)
+FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN key(Source_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN key(Destination_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE OVERALL_WAITING(
+PNR_no int,
+Train_no int,
+Date DATE,
+Coach_Type int,
+WL_no int,
+PRIMARY KEY(PNR_no,Train_no,Date,Coach_Type,WL_no),
+FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN key(PNR_no) REFERENCES BOOKING(PNR_no) ON UPDATE CASCADE ON DELETE CASCADE,
 );
