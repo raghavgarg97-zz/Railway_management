@@ -12,21 +12,23 @@ no_of_platforms int
 );
 
 CREATE TABLE COACH_DETAILS(
-Coach_Type int PRIMARY KEY,
+Coach_Type varchar(10) PRIMARY KEY,
 AC BOOLEAN,
 Nature_of_coach varchar(10) CHECK(Nature_of_coach IN ("Seater","Sleeper","Goods","Pantry")),
 Layout_no int,
 Total_available_seats int
 );
 
-INSERT INTO COACH_DETAILS values(1,true,"Seater",1,80);
-INSERT INTO COACH_DETAILS values(2,true,"Seater",2,80);
-INSERT INTO COACH_DETAILS values(3,true,"Sleeper",3,40);
-INSERT INTO COACH_DETAILS values(4,true,"Sleeper",4,30);
-INSERT INTO COACH_DETAILS values(5,true,"Sleeper",5,20);
-INSERT INTO COACH_DETAILS values(6,false,"Seater",1,80);
-INSERT INTO COACH_DETAILS values(7,false,"Pantry",6,0);
-INSERT INTO COACH_DETAILS values(8,false,"Goods",6,0);
+INSERT INTO COACH_DETAILS values("CC",true,"Seater",1,80);
+INSERT INTO COACH_DETAILS values("EC",true,"Seater",2,80);
+INSERT INTO COACH_DETAILS values("3AC",true,"Sleeper",3,40);
+INSERT INTO COACH_DETAILS values("2AC",true,"Sleeper",4,30);
+INSERT INTO COACH_DETAILS values("1AC",true,"Sleeper",5,20);
+INSERT INTO COACH_DETAILS values("SL",false,"Sleeper",3,40);
+INSERT INTO COACH_DETAILS values("GN",false,"Sleeper",3,40);
+INSERT INTO COACH_DETAILS values("2S",false,"Seater",1,80);
+INSERT INTO COACH_DETAILS values("Pantry",false,"Pantry",6,0);
+INSERT INTO COACH_DETAILS values("Goods",false,"Goods",6,0);
 
 CREATE TABLE TRAIN_INFO(
 Train_no int PRIMARY KEY,
@@ -85,7 +87,7 @@ FOREIGN key(station_no_2) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON D
 CREATE TABLE TICKET_AVAILABLITY(
 Train_no int,
 Date DATE,
-Coach_Type int,
+Coach_Type varchar(10),
 Station_no int,
 Total_available_seats int,
 PRIMARY KEY(Train_no,Date,Coach_Type,Station_no),
@@ -103,7 +105,7 @@ DOB DATE,
 Gender varchar(10) CHECK(Gender in ('M','F','Other')),
 Insurance_AV int,
 Train_no int,
-Coach_Type int,
+Coach_Type varchar(10),
 Coach_no int,
 Seat_no int,
 Source_station_no int,
@@ -120,7 +122,7 @@ CREATE TABLE OVERALL_WAITING(
 PNR_no int,
 Train_no int,
 Date DATE,
-Coach_Type int,
+Coach_Type varchar(10),
 WL_no int,
 PRIMARY KEY(PNR_no,Train_no,Date,Coach_Type,WL_no),
 FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE ON DELETE CASCADE,
