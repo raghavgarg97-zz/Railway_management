@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -22,14 +23,17 @@ include_once 'functions.php';
 
 sec_session_start(); // Our custom secure way of starting a PHP session.
 
-if (isset($_POST['email'], $_POST['p'])) {
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+if (isset($_POST['username'], $_POST['p'])) {
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_EMAIL);
     $password = $_POST['p']; // The hashed password.
     
-    if (login($email, $password, $mysqli) == true) {
+    if (login($username, $password, $mysqli) == true) {
         // Login success 
-        header("Location: ../display_trains.php");
-        exit();
+        //header("Location: ../display_trains.php");
+        $URL = "../display_trains.php?username=".$username."";
+        echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+        echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
+        //exit();
     } else {
         // Login failed 
         header('Location: ../index.php?error=1');

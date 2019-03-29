@@ -100,7 +100,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="sel4">Select Class:</label>
-										  <select class="form-control" name="sel1">
+										  <select class="form-control" name="sel3">
 										    <option>CC</option>
 										    <option>EC</option>
 										    <option>3AC</option>

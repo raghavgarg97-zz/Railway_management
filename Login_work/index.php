@@ -146,7 +146,7 @@ if (login_check($mysqli) == true) {
         }
         ?>
         <form action="includes/process_login.php" method="post" name="login_form">
-            Email: <input type="text" name="email" />
+            Username: <input type="text" name="username" />
             Password: <input type="password"
                              name="password"
                              id="password"/>

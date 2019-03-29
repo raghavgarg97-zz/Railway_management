@@ -30,7 +30,7 @@
  */
 define("HOST", "localhost"); 			// The host you want to connect to. 
 define("USER", "dbms"); 			// The database username. 
-define("PASSWORD", "group_23"); 	// The database password. 
+define("PASSWORD", "Group_23"); 	// The database password. 
 define("DATABASE", "RAILWAY_MANAGEMENT");             // The database name.
 
 /**
