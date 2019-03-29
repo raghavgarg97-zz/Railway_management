@@ -52,12 +52,12 @@
 								<p>Come In As Guests. Leave As Family.</p>
 							</div>
 						</div>
-						<form>
+						<form action="includes/train_list.php" method="post">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="sel1">Source:</label>
-										  <select class="form-control" id="sel1">
+										  <select class="form-control" name="sel1">
 										    <option>CNB</option>
 										    <option>NDLS</option>
 										    <option>GZB</option>
@@ -68,7 +68,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="sel2">Destination:</label>
-										  <select class="form-control" id="sel1">
+										  <select class="form-control" name="sel2">
 										    <option>CNB</option>
 										    <option>NDLS</option>
 										    <option>GZB</option>
@@ -82,7 +82,7 @@
 									<div class="form-group">
 									<label for="sel3">Pick Date:</label>
 										<div class='input-group date' id='datetimepicker1'>
-						                    <input type='text' class="form-control" id="date-daily" />
+						                    <input type='text' class="form-control" id="date-daily" name="date" />
 						                    <span class="input-group-addon">
 						                        <span class="glyphicon glyphicon-calendar"></span>
 						                    </span>
@@ -100,7 +100,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="sel4">Select Class:</label>
-										  <select class="form-control" id="sel1">
+										  <select class="form-control" name="sel1">
 										    <option>CC</option>
 										    <option>EC</option>
 										    <option>3AC</option>
