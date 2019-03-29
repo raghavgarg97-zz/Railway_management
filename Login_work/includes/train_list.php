@@ -27,48 +27,7 @@
 		<div class="container-table100">
 			<div class="wrap-table100">
 				<div class="table100 ver1">
-					<div class="table100-firstcol">
-						<table>
-							<thead>
-								<tr class="row100 head">
-									<th class="cell100 column1">Employees</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="row100 body">
-									<td class="cell100 column1">Brandon Green</td>
-								</tr>
-
-								<tr class="row100 body">
-									<td class="cell100 column1">Kathy Daniels</td>
-								</tr>
-
-								<tr class="row100 body">
-									<td class="cell100 column1">Elizabeth Alvarado</td>
-								</tr>
-
-								<tr class="row100 body">
-									<td class="cell100 column1">Michael Coleman</td>
-								</tr>
-
-								<tr class="row100 body">
-									<td class="cell100 column1">Jason Cox</td>
-								</tr>
-
-								<tr class="row100 body">
-									<td class="cell100 column1">Christian Perkins</td>
-								</tr>
-
-								<tr class="row100 body">
-									<td class="cell100 column1">Emily Wheeler</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					
-					<div class="wrap-table100-nextcols js-pscroll">
-						<div class="table100-nextcols">
-							<table>
+							<table id="table1">
 								<thead>
 									<tr class="row100 head">
 										<th class="cell100 column2">Position</th>
@@ -89,6 +48,8 @@
 										<td class="cell100 column6">30</td>
 										<td class="cell100 column7">New York City, NY</td>
 										<td class="cell100 column8">424242xxxxxx6262</td>
+										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(1)"></td>
+
 									</tr>
 
 									<tr class="row100 body">
@@ -99,6 +60,8 @@
 										<td class="cell100 column6">26</td>
 										<td class="cell100 column7">New York City, NY</td>
 										<td class="cell100 column8">424242xxxxxx1616</td>
+										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(2)"></td>
+
 									</tr>
 
 									<tr class="row100 body">
@@ -109,6 +72,8 @@
 										<td class="cell100 column6">32</td>
 										<td class="cell100 column7">New York City, NY</td>
 										<td class="cell100 column8">424242xxxxxx5326</td>
+										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(3)"></td>
+
 									</tr>
 
 									<tr class="row100 body">
@@ -119,6 +84,8 @@
 										<td class="cell100 column6">22</td>
 										<td class="cell100 column7">New York City, NY</td>
 										<td class="cell100 column8">424242xxxxxx6328</td>
+										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(4)"></td>
+
 									</tr>
 
 									<tr class="row100 body">
@@ -129,6 +96,8 @@
 										<td class="cell100 column6">25</td>
 										<td class="cell100 column7">New York City, NY</td>
 										<td class="cell100 column8">424242xxxxxx7648</td>
+										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(5)"></td>
+
 									</tr>
 
 									<tr class="row100 body">
@@ -139,6 +108,8 @@
 										<td class="cell100 column6">28</td>
 										<td class="cell100 column7">New York City, NY</td>
 										<td class="cell100 column8">424242xxxxxx4152</td>
+										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(6)"></td>
+
 									</tr>
 
 									<tr class="row100 body">
@@ -149,17 +120,27 @@
 										<td class="cell100 column6">24</td>
 										<td class="cell100 column7">New York City, NY</td>
 										<td class="cell100 column8">424242xxxxxx6668</td>
+										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(7)"></td>
+
 									</tr>
 								</tbody>
 							</table>
-						</div>
-					</div>
+						
 				</div>
 			</div>
 		</div>
 	</div>
 
-
+<script type="text/javascript">
+   function getAllData(id_value){
+   var table = document.getElementById("table1");
+   FirstName = table.rows[id_value].cells[0].innerHTML;                
+   LastName = table.rows[id_value].cells[1].innerHTML;
+   phone = table.rows[id_value].cells[2].innerHTML;
+    alert(FirstName+"=="+LastName+"=="+phone);
+  window.location.href="../display_trains.php?FirstName="+FirstName+"&LastName="+LastName+"&phone="+phone;
+   }
+</script>
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
