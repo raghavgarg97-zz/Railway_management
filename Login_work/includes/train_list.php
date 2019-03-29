@@ -1,3 +1,6 @@
+<?php
+include_once 'db_connect.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,102 +30,49 @@
 		<div class="container-table100">
 			<div class="wrap-table100">
 				<div class="table100 ver1">
-							<table id="table1">
+				<table id="table1">
 								<thead>
 									<tr class="row100 head">
-										<th class="cell100 column2">Position</th>
-										<th class="cell100 column3">Start date</th>
-										<th class="cell100 column4">Last Activity</th>
-										<th class="cell100 column5">Contacts</th>
-										<th class="cell100 column6">Age</th>
-										<th class="cell100 column7">Address</th>
-										<th class="cell100 column8">Card No</th>
+										<th class="cell100 column2">Train_no</th>
+										<th class="cell100 column3">Train_name</th>
+										<th class="cell100 column4">Source_Station</th>
+										<th class="cell100 column5">Destination_station</th>
+										<th class="cell100 column6">Distance</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="row100 body">
-										<td class="cell100 column2">CMO</td>
-										<td class="cell100 column3">16 Nov 2012</td>
-										<td class="cell100 column4">16 Nov 2017</td>
-										<td class="cell100 column5">brandon94@example.com</td>
-										<td class="cell100 column6">30</td>
-										<td class="cell100 column7">New York City, NY</td>
-										<td class="cell100 column8">424242xxxxxx6262</td>
-										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(1)"></td>
+								<?php
+										/*
+										THESE VALUES ARE TO BE USED TO EXTRACT TRAINS
+											$username=$_GET['username'];
+											$source=$_POST['sel1'];
+											$destination=$_POST['sel2'];
+											$coach=$_POST['sel3'];
+											$date=$_POST['date'];
+										*/
+										
+										$sq = 'SELECT * FROM TRAIN_INFO;';
+									    $result = $mysqli->query($sq);
+									    $c=0;
 
-									</tr>
+									    
+									    while ($row = $result->fetch_assoc()){
+									    $c=$c+1;
+									    echo '<tr class="row100 head">';
+										echo '<td class="cell100 column2">'.$row["Train_no"].'</th>';
+										echo '<td class="cell100 column2">'.$row["Train_name"].'</th>';
+										echo '<td class="cell100 column2">'.$row["Source_station_no"].'</th>';
+										echo '<td class="cell100 column2">'.$row["Destination_station_no"].'</th>';
+										echo '<td class="cell100 column2">'.$row["Distance"].'</th>';
+										echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.')"></td>';
+										echo '</tr>';
+										
+										
+									        
+									    }
 
-									<tr class="row100 body">
-										<td class="cell100 column2">Marketing</td>
-										<td class="cell100 column3">16 Nov 2015</td>
-										<td class="cell100 column4">30 Nov 2017</td>
-										<td class="cell100 column5">kathy_82@example.com</td>
-										<td class="cell100 column6">26</td>
-										<td class="cell100 column7">New York City, NY</td>
-										<td class="cell100 column8">424242xxxxxx1616</td>
-										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(2)"></td>
 
-									</tr>
-
-									<tr class="row100 body">
-										<td class="cell100 column2">CFO</td>
-										<td class="cell100 column3">16 Nov 2013</td>
-										<td class="cell100 column4">30 Nov 2017</td>
-										<td class="cell100 column5">elizabeth82@example.com</td>
-										<td class="cell100 column6">32</td>
-										<td class="cell100 column7">New York City, NY</td>
-										<td class="cell100 column8">424242xxxxxx5326</td>
-										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(3)"></td>
-
-									</tr>
-
-									<tr class="row100 body">
-										<td class="cell100 column2">Designer</td>
-										<td class="cell100 column3">16 Nov 2013</td>
-										<td class="cell100 column4">30 Nov 2017</td>
-										<td class="cell100 column5">michael94@example.com</td>
-										<td class="cell100 column6">22</td>
-										<td class="cell100 column7">New York City, NY</td>
-										<td class="cell100 column8">424242xxxxxx6328</td>
-										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(4)"></td>
-
-									</tr>
-
-									<tr class="row100 body">
-										<td class="cell100 column2">Developer</td>
-										<td class="cell100 column3">16 Nov 2017</td>
-										<td class="cell100 column4">30 Nov 2017</td>
-										<td class="cell100 column5">jasoncox@example.com</td>
-										<td class="cell100 column6">25</td>
-										<td class="cell100 column7">New York City, NY</td>
-										<td class="cell100 column8">424242xxxxxx7648</td>
-										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(5)"></td>
-
-									</tr>
-
-									<tr class="row100 body">
-										<td class="cell100 column2">Sale</td>
-										<td class="cell100 column3">16 Nov 2016</td>
-										<td class="cell100 column4">30 Nov 2017</td>
-										<td class="cell100 column5">christian_83@example.com</td>
-										<td class="cell100 column6">28</td>
-										<td class="cell100 column7">New York City, NY</td>
-										<td class="cell100 column8">424242xxxxxx4152</td>
-										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(6)"></td>
-
-									</tr>
-
-									<tr class="row100 body">
-										<td class="cell100 column2">Support</td>
-										<td class="cell100 column3">16 Nov 2013</td>
-										<td class="cell100 column4">30 Nov 2017</td>
-										<td class="cell100 column5">emily90@example.com</td>
-										<td class="cell100 column6">24</td>
-										<td class="cell100 column7">New York City, NY</td>
-										<td class="cell100 column8">424242xxxxxx6668</td>
-										<td><input type = 'radio' id="id1" name = 'select' value = '1' required onclick="getAllData(7)"></td>
-
-									</tr>
+								?>
 								</tbody>
 							</table>
 						
@@ -134,22 +84,22 @@
 <script type="text/javascript">
    function getAllData(id_value){
    var table = document.getElementById("table1");
-   FirstName = table.rows[id_value].cells[0].innerHTML;                
-   LastName = table.rows[id_value].cells[1].innerHTML;
-   phone = table.rows[id_value].cells[2].innerHTML;
-    alert(FirstName+"=="+LastName+"=="+phone);
-  window.location.href="../display_trains.php?FirstName="+FirstName+"&LastName="+LastName+"&phone="+phone;
+   Train_no = table.rows[id_value].cells[0].innerHTML;                
+   Train_name = table.rows[id_value].cells[1].innerHTML;
+    alert("You are being redirected......");
+    // ALso edit this link
+  window.location.href="../booking_data.php?Train_no="+Train_no+"&Train_name="+Train_name;
    }
 </script>
 <!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="../styles/train_list_vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../styles/train_list_vendor/bootstrap/js/popper.js"></script>
+	<script src="../styles/train_list_vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
+	<script src="../styles/train_list_vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="../styles/train_list_vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script>
 		$('.js-pscroll').each(function(){
 			var ps = new PerfectScrollbar(this);
@@ -173,7 +123,7 @@
 		
 	</script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<script src="../js/train_list_js/main.js"></script>
 
 </body>
 </html>

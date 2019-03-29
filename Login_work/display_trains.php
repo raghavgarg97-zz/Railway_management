@@ -52,7 +52,10 @@
 								<p>Come In As Guests. Leave As Family.</p>
 							</div>
 						</div>
-						<form action="includes/train_list.php" method="post">
+						<?php
+						$username=$_GET['username']
+						?>
+						<form action="includes/train_list.php?username=<?php echo $username;?>" method="post">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
