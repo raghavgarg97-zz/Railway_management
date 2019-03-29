@@ -28,7 +28,7 @@ if (isset($_POST['email'], $_POST['p'])) {
     
     if (login($email, $password, $mysqli) == true) {
         // Login success 
-        header("Location: ../protected_page.php");
+        header("Location: ../display_trains.php");
         exit();
     } else {
         // Login failed 
