@@ -147,11 +147,11 @@ FOREIGN key(station_no_2) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON D
 
 CREATE TABLE TICKET_AVAILABLITY(
 Train_no int,
-Dates DATE,
+Date DATE,
 Coach_Type varchar(10),
 Station_no int,
 Total_available_seats int,
-PRIMARY KEY(Train_no,Dates,Coach_Type,Station_no),
+PRIMARY KEY(Train_no,Date,Coach_Type,Station_no),
 FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN key(Station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE ON DELETE CASCADE
