@@ -49,69 +49,37 @@
 						<div class="booking-bg">
 							<div class="form-header">
 								<h2>Enter your information</h2>
-								<p>Come In As Guests. Leave As Family.</p>
+								<p>Check your PNR Info</p>
 							</div>
 						</div>
 						
-						<form action="booking_data.php" method="post">
+						<form action="pnr_status.php" method="post">
+							
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="sel1">Name:</label>
-										<input type="text" name="firstname"><br>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="sel2">Age:</label>
-										  <input type="text" name="age"><br>
+										<label for="sel1">PNR Number:</label>
+										<input type="text" name="PNR"><br>
 									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-6">
-									<div class="form-group">
-									<label for="sel3">DOB:</label>
-										<div class='input-group date' id='datetimepicker1'>
-						                    <input type='text' class="form-control" id="date-daily" name="date" />
-						                    <span class="input-group-addon">
-						                        <span class="glyphicon glyphicon-calendar"></span>
-						                    </span>
-						                </div>
-									</div>
-								</div>
-								<script type="text/javascript">
-								$(document).ready(function () {
-							        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY'});						        
-							    }
-
-							    );
-								</script> 
-
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="sel4">Gender:</label>
-										  <select class="form-control" name="sel3">
-										    <option>Male</option>
-										    <option>Female</option>
-										    <option>Other</option>
-										  </select>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<span class="form-label">Insurance AV</span>
-								<select class="form-control" required>
-									<option value="" selected hidden>Do you want insurance?</option>
-									<option>0</option>
-									<option>1</option>
-								</select>
-								<span class="select-arrow"></span>
-							</div>
+			
 							
 							<div class="form-btn">
-								<button class="submit-btn">Book Ticket</button>
+								<button class="submit-btn">Check Status</button>
+							</div>
+						</form>
+						<form action="pnr.php" method="post">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="sel1">PNR Number:</label>
+										<input type="text" name="PNR"><br>
+									</div>
+								</div>
+							</div>
+							<div class="form-btn">
+								<button class="submit-btn" onClick="alert('Are you sure you want to cancel your ticket?')">Cancel Ticket</button>
 							</div>
 						</form>
 					</div>

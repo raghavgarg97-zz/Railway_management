@@ -30,7 +30,7 @@ if (isset($_POST['username'], $_POST['p'])) {
     if (login($username, $password, $mysqli) == true) {
         // Login success 
         //header("Location: ../display_trains.php");
-        $URL = "../display_trains.php?username=".$username."";
+        $URL = "../home.php?username=".$username."";
         echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
         echo '<META HTTP-EQUIV="refresh" content="0;URL=' . $URL . '">';
         //exit();
