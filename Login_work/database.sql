@@ -194,8 +194,32 @@ FOREIGN key(PNR_no) REFERENCES BOOKING(PNR_no) ON UPDATE CASCADE ON DELETE CASCA
 DELIMITER //
 CREATE TRIGGER railway_graph_check BEFORE INSERT ON RAILWAY_PATH
 FOR EACH ROW BEGIN
-IF (SELECT A.Station_no_1 from ALL_POSSIBLE_PATHS as A  where A.Station_no_1=NEW.Station_no and A.Station_no_2 = NEW.previous_station_no) IS NULL THEN
-CALL raise_error;
+IF (NEW.previous_station_no IS NOT NULL) AND (SELECT A.Station_no_1 from ALL_POSSIBLE_PATHS as A  where  (A.Station_no_1=NEW.Station_no and A.Station_no_2 = NEW.previous_station_no) OR (A.Station_no_2=NEW.Station_no and A.Station_no_1 = NEW.previous_station_no)) IS NULL THEN
+SET NEW.Train_no=NULL;
+SET NEW.Station_no=NULL;
 END IF;
 END;//
 DELIMITER ;
+
+insert into STATIONS values(1,"NDLS","Delhi","siddharth",12);
+insert into STATIONS values(2,"GZB","Ghaziabad","raghav",12);
+insert into STATIONS values(3,"CNB","Kanpur","chandani",10);
+insert into STATIONS values(4,"LJN","Lucknow","yash",12);
+
+insert into ALL_POSSIBLE_PATHS values(1,2);
+insert into ALL_POSSIBLE_PATHS values(2,3);
+insert into ALL_POSSIBLE_PATHS values(3,4);
+insert into ALL_POSSIBLE_PATHS values(1,3);
+insert into ALL_POSSIBLE_PATHS values(1,4);
+insert into ALL_POSSIBLE_PATHS values(2,4);
+
+insert into TRAIN_INFO values(12004,"Shatabdi",1,4,500,"Broad_gauge");
+insert into TRAIN_INFO values(12003,"Shatabdi",4,1,500,"Broad_gauge");
+insert into TRAIN_INFO values(12034,"Shatabdi",3,1,450,"Broad_gauge");
+
+insert into RAILWAY_PATH values(12004,1,NULL,0,1,"6:30:00","6:30:00",true,true,true,true,true,true,true,0);
+insert into RAILWAY_PATH values(12004,2,1,100,2,"6:48:00","6:55:00",true,true,true,true,true,true,true,0);
+insert into RAILWAY_PATH values(12004,3,2,450,3,"11:20:00","11:25:00",true,true,true,true,true,true,true,0);
+insert into RAILWAY_PATH values(12004,4,3,500,4,"12:30:00","12:30:00",true,true,true,true,true,true,true,0);
+insert into RAILWAY_PATH values(12034,3,NULL,0,1,"4:50:00","4:50:00",true,true,true,true,true,true,true,0);
+insert into RAILWAY_PATH values(12034,1,3,450,2,"8:50:00","8:50:00",true,true,true,true,true,true,true,0);

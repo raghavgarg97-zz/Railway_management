@@ -24,4 +24,13 @@ if ($mysqli->connect_error) {
     header("Location: ../error.php?err=Unable to connect to MySQL");
     exit();
 }
+/*
+$sq = 'SELECT CONNECTION_ID();';
+$result = $mysqli->query($sq);
+$message="nothing";
+if ($row = $result->fetch_assoc()) {
+$message=$row["CONNECTION_ID()"];
+}
+echo "<script type='text/javascript'>alert('".$message."');</script>";
+*/
 ?>

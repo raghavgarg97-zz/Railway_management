@@ -96,7 +96,7 @@
 								</div>
 								<script type="text/javascript">
 								$(document).ready(function () {
-							        $('#datetimepicker1').datetimepicker({ format: 'DD/MM/YYYY'});						        
+							        $('#datetimepicker1').datetimepicker({ format: 'YYYY-MM-DD'});						        
 							    }
 
 							    );
