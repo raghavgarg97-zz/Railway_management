@@ -207,11 +207,13 @@ insert into ALL_POSSIBLE_PATHS values(2,4);
 insert into TRAIN_INFO values(12004,"Shatabdi",1,4,500,true,true,true,true,true,true,true,"Broad_gauge");
 insert into TRAIN_INFO values(12003,"Shatabdi",4,1,500,true,true,true,true,true,true,true,"Broad_gauge");
 insert into TRAIN_INFO values(12034,"Shatabdi",3,1,450,true,true,true,true,true,true,true,"Broad_gauge");
-	
-insert into TRAIN_SCHEDULE values(12003,"CC",120);
-insert into TRAIN_SCHEDULE values(12003,"EC",120);
-insert into TRAIN_SCHEDULE values(12004,"CC",120);
-insert into TRAIN_SCHEDULE values(12004,"EC",120);
+
+insert into TRAIN_SCHEDULE values(12003,"CC",3);
+insert into TRAIN_SCHEDULE values(12003,"EC",3);
+insert into TRAIN_SCHEDULE values(12004,"CC",3);
+insert into TRAIN_SCHEDULE values(12004,"EC",3);
+insert into TRAIN_SCHEDULE values(12034,"CC",3);
+insert into TRAIN_SCHEDULE values(12034,"EC",3);
 
 
 INSERT INTO COACH_DETAILS values("CC",true,"Seater",1,80);
@@ -265,4 +267,32 @@ SET @cur_date=(select date_add(@cur_date,interval 1 day));
 END WHILE;	
 END;//
 DELIMITER ;
+
+/*
+UNCOMMENT TO ENTER TICKET_AVAILABLITY DATA.
+CAUTION: Each insertion takes aaround 5s
+call table_ins(12004,"CC",1);
+call table_ins(12004,"EC",1);
+call table_ins(12004,"CC",2);
+call table_ins(12004,"EC",2);
+call table_ins(12004,"CC",3);
+call table_ins(12004,"EC",3);
+call table_ins(12004,"CC",4);
+call table_ins(12004,"EC",4);
+
+call table_ins(12003,"CC",1);
+call table_ins(12003,"EC",1);
+call table_ins(12003,"CC",2);
+call table_ins(12003,"EC",2);
+call table_ins(12003,"CC",3);
+call table_ins(12003,"EC",3);
+call table_ins(12003,"CC",4);
+call table_ins(12003,"EC",4);
+
+call table_ins(12034,"CC",1);
+call table_ins(12034,"EC",1);
+call table_ins(12034,"CC",2);
+call table_ins(12034,"EC",2);
+
+*/
 

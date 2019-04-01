@@ -1,5 +1,21 @@
 <?php
 include_once 'db_connect.php';
+
+function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
+	$sq='Select Station_no from  RAILWAY_PATH where Train_no='.$train_no.' and Sequence_number BETWEEN '.$source_no.' and '.($dest_no-1).';';
+	$result = $mysqli->query($sq);
+	$min=1000;
+	while ($row = $result->fetch_assoc()){
+		$sq2='SELECT Total_available_seats from TICKET_AVAILABLITY where Train_no='.$train_no.' and Station_no='.$row["Station_no"].' and Date="'.$date.'" and Coach_Type="'.$coach.'";';
+		$result2 = $mysqli->query($sq2);
+		$row2 = $result2->fetch_assoc();
+		if ($row2["Total_available_seats"]<$min){
+			$min=$row2["Total_available_seats"];
+		}
+	}
+	return $min;
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +53,9 @@ include_once 'db_connect.php';
 										<th class="cell100 column3">Train_name</th>
 										<th class="cell100 column4">Source_Station</th>
 										<th class="cell100 column5">Destination_station</th>
+										<th class="cell100 column6">Total Seats Available</th>
 										<th class="cell100 column6">Distance</th>
+										<th class="cell100 column6">Price</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -50,87 +68,51 @@ include_once 'db_connect.php';
 											$date=$_POST['date'];
 										$dt = strtotime($date);
 										$day = date("D", $dt);
-										$sq='SELECT DISTINCT T.Train_no as Train_num,date_format(date_add("'.$date.'",interval -T.Day_offset day), "%W") AS day FROM 
-										(SELECT Train_no,Sequence_number,Day_offset from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
-										SELECT Train_no,Sequence_number,Day_offset from RAILWAY_PATH,STATIONS where
-										Station_name="'.$destination.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
+										$sq='SELECT DISTINCT T.Train_no as Train_num,Train_name ,date_format(date_add("'.$date.'",interval -T.Day_offset day), "%W") AS day,date_add("'.$date.'",interval -T.Day_offset day) as date,T.Sequence_number as source_no,S.Sequence_number as dest_no,
+										S.Distance-T.Distance as Distance FROM 
+										(SELECT Train_no,Sequence_number,Day_offset,Distance from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
+										SELECT Train_no,Sequence_number,Day_offset,Distance from RAILWAY_PATH,STATIONS where
+										Station_name="'.$destination.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no;';
 
 											$result = $mysqli->query($sq);
+											$c=0;
 
 											 while ($row = $result->fetch_assoc()){
 											 	$train_no=$row["Train_num"];
+											 	$train_name=$row["Train_name"];
 											 	$day=$row["day"];
+											 	$date=$row["date"];
+											 	$source_no=$row["source_no"];
+											 	$dest_no=$row["dest_no"];
+											 	$Distance=$row["Distance"];
 
-											 	$sq='SELECT '.$day.'_avail from TRAIN_INFO where Train_no='.$train_no.';';
-											 	$result2 = $mysqli->query($sq);
+											 	$sq2='SELECT '.$day.'_avail from TRAIN_INFO where Train_no='.$train_no.';';
+											 	$result2 = $mysqli->query($sq2);
 											 	$row2 = $result2->fetch_assoc();
 											 	
 											 	if ($row2["$day_avail"]=true){
-											 		
-											 		
+											 		$sq3='SELECT price from TRAIN_SCHEDULE where Train_no='.$train_no.' and Coach_Type="'.$coach.'";';
+												 	$result3 = $mysqli->query($sq3);
+												 	$row3 = $result3->fetch_assoc();
+												 	$seats=find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli);
+												 	if($seats<0){
+												 		//Upadte $seats to show Waiting list no' for train
+												 	}
+												 	$c=$c+1;
+												    echo '<tr class="row100 head">';
+													echo '<td class="cell100 column2">'.$train_no.'</th>';
+													echo '<td class="cell100 column2">'.$train_name.'</th>';
+													echo '<td class="cell100 column2">'.$source.'</th>';
+													echo '<td class="cell100 column2">'.$destination.'</th>';
+													echo '<td class="cell100 column2">'.$seats.'</th>';
+													echo '<td class="cell100 column2">'.$Distance.'</th>';
+													echo '<td class="cell100 column2">'.($Distance*$row3["price"]).'</th>';
+													echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.')"></td>';
+													echo '</tr>';
+													}
+
 											 	}
-											 }
-										
-										
-
-										// if (strtoupper($day) == "SAT"){
-										// 	$sq = 'SELECT DISTINCT T.Train_no from 
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Saturday_avail=true)T ,
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Saturday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-										// 	$result = $mysqli->query($sq);				
-											
-										//     }
-										//     if (strtoupper($day) == "SUN"){
-										// 	$sq = 'SELECT DISTINCT T.Train_no from 
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Sunday_avail=true)T ,
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Sunday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-										// 	$result = $mysqli->query($sq);				
-											
-										//     }
-										//     if (strtoupper($day) == "MON"){
-										// 	$sq = 'SELECT DISTINCT T.Train_no from 
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Monday_avail=true)T ,
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Monday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-										// 	$result = $mysqli->query($sq);				
-											
-										//     }
-										//     if (strtoupper($day) == "TUE"){
-										// 	$sq = 'SELECT DISTINCT T.Train_no from 
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Tuesday_avail=true)T ,
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Tuesday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-										// 	$result = $mysqli->query($sq);				
-											
-										//     }
-										//     if (strtoupper($day) == "WED"){
-										// 	$sq = 'SELECT DISTINCT T.Train_no from 
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Wednesday_avail=true)T ,
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Wednesday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-										// 	$result = $mysqli->query($sq);				
-											
-										//     }
-										//     if (strtoupper($day) == "THU"){
-										// 	$sq = 'SELECT DISTINCT T.Train_no from 
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Thursday_avail=true)T ,
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Thursday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-										// 	$result = $mysqli->query($sq);				
-											
-										//     }
-										//     if (strtoupper($day) == "FRI"){
-										// 	$sq = 'SELECT DISTINCT T.Train_no from 
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Friday_avail=true)T ,
-										// 	(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Friday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-										// 	$result = $mysqli->query($sq);		
-											
-											
-										//     }
-										 //    while ($row = $result->fetch_assoc()){
-										 //    $c=$c+1;
-										 //    echo '<tr class="row100 head">';
-											// echo '<td class="cell100 column2">'.$row["Train_no"].'</th>';
-											// echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.')"></td>';
-											// echo '</tr>';
-
-											// }
+							
 								?>
 								</tbody>
 							</table>
