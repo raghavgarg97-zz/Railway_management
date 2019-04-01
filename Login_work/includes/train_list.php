@@ -72,7 +72,7 @@ include_once 'db_connect.php';
 											$result = $mysqli->query($sq);				
 											
 										    }
-										    if (strtoupper($day) == "Tue"){
+										    if (strtoupper($day) == "TUE"){
 											$sq = 'SELECT DISTINCT T.Train_no from 
 											(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Tuesday_avail=true)T ,
 											(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Tuesday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
@@ -95,9 +95,14 @@ include_once 'db_connect.php';
 										    }
 										    if (strtoupper($day) == "FRI"){
 											$sq = 'SELECT DISTINCT T.Train_no from 
-											(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Saturday_avail=true)T ,
-											(SELFridayn_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Friday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
-											$result = $mysqli->query($sq);				
+											(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$source.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no  and Friday_avail=true)T ,
+											(SELECT Train_no,Sequence_number from RAILWAY_PATH,STATIONS where Station_name="'.$destination.'" and RAILWAY_PATH.Station_no=STATIONS.Station_no and Friday_avail=true)S where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number;';
+											$result = $mysqli->query($sq);		
+											if ($result==false){
+												echo "here";
+												echo "<script type='text/javascript'>alert('failed');</script>";
+
+											}		
 											
 										    }
 										    while ($row = $result->fetch_assoc()){
