@@ -48,38 +48,30 @@
 					<div class="booking-form">
 						<div class="booking-bg">
 							<div class="form-header">
-								<h2>Enter your information</h2>
-								<p>Check your PNR Info</p>
+								<h2>Booking Confirmed</h2>
+								<p>Come In As Guests. Leave As Family.</p>
 							</div>
 						</div>
+
+						<?php
+							$Train_no = $_GET['Train_no'];
+							$Train_name = $_GET['Train_name'];
+							$username = $_GET['username'];
+							$source = $_GET['source'];
+							$destination = $_GET['destination'];
+							$date = $_GET['date'];
+							$name = $_POST['sel1'];
+							$age = $_POST['sel2'];
+							$dob = $_POST['sel3'];
+							$gen = $_POST['sel4'];
+							$ins = $_POST['sel5'];
+
+							//To be done by chandnani
+						?>
 						
-						<form action="pnr_status.php" method="post">
-							
-							<div class="row">
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="sel1">PNR Number:</label>
-										<input type="text" name="PNR"><br>
-									</div>
-								</div>
-							</div>
-			
-							
-							<div class="form-btn">
-								<button class="submit-btn">Check Status</button>
-							</div>
-						</form>
 						<form action="pnr.php" method="post">
-							<div class="row">
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="sel1">PNR Number:</label>
-										<input type="text" name="PNR"><br>
-									</div>
-								</div>
-							</div>
 							<div class="form-btn">
-								<button class="submit-btn" onClick="alert('Are you sure you want to cancel your ticket?')">Cancel Ticket</button>
+								<button class="submit-btn">Go check the status with PNR</button>
 							</div>
 						</form>
 					</div>

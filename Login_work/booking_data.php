@@ -31,13 +31,6 @@
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="styles/style.css" />
 
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
-
 </head>
 
 <body>
@@ -53,27 +46,36 @@
 							</div>
 						</div>
 						
-						<form action="booking_data.php" method="post">
+						<?php
+							$Train_no = $_GET['Train_no'];
+							$Train_name = $_GET['Train_name'];
+							$username = $_GET['username'];
+							$source = $_GET['source'];
+							$destination = $_GET['destination'];
+							$date = $_GET['date'];
+						?>
+
+						<form action="booking_confirm.php?Train_no=<?php echo $Train_no;?>&Train_name=<?php echo $Train_name;?>&username=<?php echo $username;?>&source=<?php echo $source;?>&destination=<?php echo $destination;?>&date=<?php echo $date;?>" method="post">
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" required>
 										<label for="sel1">Name:</label>
-										<input type="text" name="firstname"><br>
+										<input type="text" name="sel1"><br>
 									</div>
 								</div>
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" required>
 										<label for="sel2">Age:</label>
-										  <input type="text" name="age"><br>
+										  <input type="text" name="sel2"><br>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" required>
 									<label for="sel3">DOB:</label>
 										<div class='input-group date' id='datetimepicker1'>
-						                    <input type='text' class="form-control" id="date-daily" name="date" />
+						                    <input type='text' class="form-control" id="date-daily" name="sel3" />
 						                    <span class="input-group-addon">
 						                        <span class="glyphicon glyphicon-calendar"></span>
 						                    </span>
@@ -89,9 +91,9 @@
 								</script> 
 
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" required>
 										<label for="sel4">Gender:</label>
-										  <select class="form-control" name="sel3">
+										  <select class="form-control" name="sel4">
 										    <option>Male</option>
 										    <option>Female</option>
 										    <option>Other</option>
@@ -102,10 +104,10 @@
 
 							<div class="form-group">
 								<span class="form-label">Insurance AV</span>
-								<select class="form-control" required>
+								<select class="form-control" required name="sel5">
 									<option value="" selected hidden>Do you want insurance?</option>
-									<option>0</option>
-									<option>1</option>
+									<option>Yes</option>
+									<option>No</option>
 								</select>
 								<span class="select-arrow"></span>
 							</div>
@@ -119,8 +121,5 @@
 			</div>
 		</div>
 	</div>
-
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
-
-
+</body>
 </html>

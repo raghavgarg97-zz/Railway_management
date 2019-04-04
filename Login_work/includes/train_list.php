@@ -107,7 +107,8 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 													echo '<td class="cell100 column2">'.$seats.'</th>';
 													echo '<td class="cell100 column2">'.$Distance.'</th>';
 													echo '<td class="cell100 column2">'.($Distance*$row3["price"]).'</th>';
-													echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.')"></td>';
+													/*echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.')"></td>';*/
+													echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.',\''.$username.'\',\''.$source.'\',\''.$destination.'\',\''.$date.'\')"></td>';
 													echo '</tr>';
 													}
 
@@ -123,13 +124,16 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 	</div>
 
 <script type="text/javascript">
-   function getAllData(id_value){
+   
+   function getAllData(id_value,user_name,source,destination,date){
+   	//alert(id_value);
    var table = document.getElementById("table1");
    Train_no = table.rows[id_value].cells[0].innerHTML;                
    Train_name = table.rows[id_value].cells[1].innerHTML;
     alert("You are being redirected......");
     // ALso edit this link
-  window.location.href="../booking_data.php?Train_no="+Train_no+"&Train_name="+Train_name;
+      window.location.href="../booking_data.php?Train_no="+Train_no+"&Train_name="+Train_name+"&username="+user_name+"&source="+source+"&destination="+destination+"&date="+date;
+
    }
 </script>
 <!--===============================================================================================-->	
