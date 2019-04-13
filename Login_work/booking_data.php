@@ -53,9 +53,10 @@
 							$source = $_GET['source'];
 							$destination = $_GET['destination'];
 							$date = $_GET['date'];
+							$coach = $_GET['coach'];
 						?>
 
-						<form action="booking_confirm.php?Train_no=<?php echo $Train_no;?>&Train_name=<?php echo $Train_name;?>&username=<?php echo $username;?>&source=<?php echo $source;?>&destination=<?php echo $destination;?>&date=<?php echo $date;?>" method="post">
+						<form action="booking_confirm.php?Train_no=<?php echo $Train_no;?>&Train_name=<?php echo $Train_name;?>&username=<?php echo $username;?>&source=<?php echo $source;?>&destination=<?php echo $destination;?>&date=<?php echo $date;?>&coach=<?php echo $coach;?>" method="post">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group" required>
