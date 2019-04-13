@@ -65,7 +65,8 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								</thead>
 								<tbody>
 								<?php
-										
+
+											ob_start();										
 											$username=$_GET['username'];
 											$source=$_POST['sel1'];
 											$destination=$_POST['sel2'];
@@ -73,6 +74,9 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 											$date=$_POST['date'];
 										$dt = strtotime($date);
 										$day = date("D", $dt);
+										$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS write;lock tables TRAIN_INFO READ; ';
+										$mysqli->query($sq);
+
 										$sq='SELECT DISTINCT T.Train_no as Train_num,Train_name ,date_format(date_add("'.$date.'",interval -T.Day_offset day), "%W") AS day,date_add("'.$date.'",interval -T.Day_offset day) as date,T.Sequence_number as source_no,S.Sequence_number as dest_no,
 										S.Distance-T.Distance as Distance,T.Departure_time as Dept_time,S.Arrival_time as Arr_time FROM 
 										(SELECT Train_no,Sequence_number,Day_offset,Distance,Departure_time from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
@@ -80,6 +84,9 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 											$result = $mysqli->query($sq);
 											$c=0;
+											
+										$sq6='unlock tables;commit; ';
+										$mysqli->query($sq6);
 
 											 while ($row = $result->fetch_assoc()){
 											 	$train_no=$row["Train_num"];
@@ -118,7 +125,7 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 													echo '<td class="cell100 column2">'.$time2.'</th>';
 													echo '<td class="cell100 column2">'.($Distance*$row3["price"]).'</th>';
 													/*echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.')"></td>';*/
-													echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.',\''.$username.'\',\''.$source.'\',\''.$destination.'\',\''.$date.'\')"></td>';
+													echo '<td><input type = "radio" id="id1" name = "select" value = "1" required onclick="getAllData('.$c.',\''.$username.'\',\''.$source.'\',\''.$destination.'\',\''.$date.'\',\''.$coach.'\')"></td>';
 													echo '</tr>';
 													}
 													}
@@ -136,14 +143,14 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 <script type="text/javascript">
    
-   function getAllData(id_value,user_name,source,destination,date){
+   function getAllData(id_value,user_name,source,destination,date,coach){
    	//alert(id_value);
    var table = document.getElementById("table1");
    Train_no = table.rows[id_value].cells[0].innerHTML;                
    Train_name = table.rows[id_value].cells[1].innerHTML;
     alert("You are being redirected......");
     // ALso edit this link
-      window.location.href="../booking_data.php?Train_no="+Train_no+"&Train_name="+Train_name+"&username="+user_name+"&source="+source+"&destination="+destination+"&date="+date;
+      window.location.href="../booking_data.php?Train_no="+Train_no+"&Train_name="+Train_name+"&username="+user_name+"&source="+source+"&destination="+destination+"&date="+date+"&coach="+coach;
 
    }
 </script>
