@@ -104,6 +104,7 @@ CREATE TABLE TRAIN_SCHEDULE(
 Train_no int,
 Coach_Type varchar(10),
 price int,
+no_of_coaches int,
 PRIMARY KEY(Train_no,Coach_Type),
 FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -220,12 +221,12 @@ insert into TRAIN_INFO values(12004,"Shatabdi",1,4,500,true,true,true,true,true,
 insert into TRAIN_INFO values(12003,"Shatabdi",4,1,500,true,true,true,true,true,true,true,"Broad_gauge");
 insert into TRAIN_INFO values(12034,"Shatabdi",3,1,450,true,true,true,true,true,true,true,"Broad_gauge");
 
-insert into TRAIN_SCHEDULE values(12003,"CC",3);
-insert into TRAIN_SCHEDULE values(12003,"EC",3);
-insert into TRAIN_SCHEDULE values(12004,"CC",3);
-insert into TRAIN_SCHEDULE values(12004,"EC",3);
-insert into TRAIN_SCHEDULE values(12034,"CC",3);
-insert into TRAIN_SCHEDULE values(12034,"EC",3);
+insert into TRAIN_SCHEDULE values(12003,"CC",3,5);
+insert into TRAIN_SCHEDULE values(12003,"EC",3,5);
+insert into TRAIN_SCHEDULE values(12004,"CC",3,5);
+insert into TRAIN_SCHEDULE values(12004,"EC",3,5);
+insert into TRAIN_SCHEDULE values(12034,"CC",3,5);
+insert into TRAIN_SCHEDULE values(12034,"EC",3,5);
 
 
 INSERT INTO COACH_DETAILS values("CC",true,"Seater",1,80);
@@ -280,9 +281,9 @@ END WHILE;
 END;//
 DELIMITER ;
 
-/*
-UNCOMMENT TO ENTER TICKET_AVAILABLITY DATA.
-CAUTION: Each insertion takes aaround 5s
+
+-- UNCOMMENT TO ENTER TICKET_AVAILABLITY DATA.
+-- CAUTION: Each insertion takes aaround 5s
 call table_ins(12004,"CC",1);
 call table_ins(12004,"EC",1);
 call table_ins(12004,"CC",2);
@@ -306,5 +307,5 @@ call table_ins(12034,"EC",1);
 call table_ins(12034,"CC",2);
 call table_ins(12034,"EC",2);
 
-*/
+
 
