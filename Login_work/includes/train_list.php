@@ -2,8 +2,14 @@
 include_once 'db_connect.php';
 
 function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
+	$sq2='start Transaction;lock tables RAILWAY_PATH read;lock tables TICKET_AVAILABLITY read;';
+	$mysqli->query($sq2);
+
 	$sq='Select Station_no from  RAILWAY_PATH where Train_no='.$train_no.' and Sequence_number BETWEEN '.$source_no.' and '.($dest_no-1).';';
 	$result = $mysqli->query($sq);
+
+	
+	
 	$min=1000;
 	while ($row = $result->fetch_assoc()){
 		$sq2='SELECT Total_available_seats from TICKET_AVAILABLITY where Train_no='.$train_no.' and Station_no='.$row["Station_no"].' and Date="'.$date.'" and Coach_Type="'.$coach.'";';
@@ -16,6 +22,9 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 			$min=$row2["Total_available_seats"];
 		}
 	}
+
+	$sq2='unlock tables;commit;';
+	$mysqli->query($sq2);
 	return $min;
 
 }
@@ -74,7 +83,7 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 											$date=$_POST['date'];
 										$dt = strtotime($date);
 										$day = date("D", $dt);
-										$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS write;lock tables TRAIN_INFO READ; ';
+										$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
 										$mysqli->query($sq);
 
 										$sq='SELECT DISTINCT T.Train_no as Train_num,Train_name ,date_format(date_add("'.$date.'",interval -T.Day_offset day), "%W") AS day,date_add("'.$date.'",interval -T.Day_offset day) as date,T.Sequence_number as source_no,S.Sequence_number as dest_no,
