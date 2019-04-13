@@ -51,6 +51,27 @@ include_once 'includes/db_connect.php';
 										// $coach=$_POST[''];
 										// $date=$_POST[''];
 										$PNR = $_POST['PNR'];
+										$sq='SELECT * FROM BOOKING WHERE PNR_no='.$PNR.';';
+										$result=$mysqli->query($sq);
+										$row = $result->fetch_assoc();
+										$Train_no=$row['Train_no'];
+										$source_no=$row['Source_station_no'];
+										$dest_no=$row['Destination_station_no'];
+										$date=$row['Boarding_Date'];
+										$coach=$row['Coach_Type'];
+										$status=$row['Booking_Status'];
+
+										$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND PNR_no='.$PNR.';';
+										$result = $mysqli->query($sq);
+										$row = $result->fetch_assoc();
+										$WL = $row['Wl_no'];
+										if($status == "CNF"){
+											echo "<script type='text/javascript'>alert('Your booking is confirmed');</script>";
+										}
+										else{
+											echo "<script type='text/javascript'>alert('Your waiting list number is $WL');</script>";
+										}
+
 										// $dt = strtotime($date);
 										// $day = date("D", $dt);
 
