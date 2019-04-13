@@ -52,7 +52,7 @@ include_once './includes/db_connect.php';
 										$idx = 1;
 
 										$sq = $_POST["general_query"];
-										$sq = 'SELECT * FROM STATIONS';
+										// $sq = 'SELECT * FROM STATIONS';
 										$result = $mysqli->query($sq);
 
 										$temp_row = $result->fetch_assoc();
