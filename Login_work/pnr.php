@@ -52,8 +52,10 @@
 								<p>Check your PNR Info</p>
 							</div>
 						</div>
-						
-						<form action="pnr_status.php" method="post">
+						<?php
+							$username = $_GET['username'];
+						?>
+						<form action="pnr_status.php?username=<?php echo $username;?>" method="post">
 							
 							<div class="row">
 								<div class="col-md-6">
@@ -69,7 +71,7 @@
 								<button class="submit-btn">Check Status</button>
 							</div>
 						</form>
-						<form action="pnr.php" method="post">
+						<form action="cancel_confirmed.php?username=<?php echo $username;?>" method="post">
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
