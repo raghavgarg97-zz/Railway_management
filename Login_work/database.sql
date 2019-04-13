@@ -145,9 +145,6 @@ FOREIGN key(Coach_Type) REFERENCES COACH_DETAILS(Coach_Type) ON UPDATE CASCADE O
 );
 
 
-
-
-
 CREATE TABLE BOOKING(
 PNR_no int PRIMARY KEY,
 Username varchar(30),
