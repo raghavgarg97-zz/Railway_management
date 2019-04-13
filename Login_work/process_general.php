@@ -49,11 +49,10 @@ include_once './includes/db_connect.php';
 										$table_header = '<thead> <tr class = "row100 head">';
 										$table_body = '';
 										$table_footer = '</tr> </thead>';
-										$idx = 2;
+										$idx = 1;
 
 										$sq = $_POST["general_query"];
-										$sq = 'SELECT * FROM STATIONS;';
-
+										$sq = 'SELECT * FROM STATIONS';
 										$result = $mysqli->query($sq);
 
 										$temp_row = $result->fetch_assoc();
@@ -68,9 +67,11 @@ include_once './includes/db_connect.php';
 
 										
 										while ($row = $result->fetch_assoc()){
+											$c = 1;
 											echo '<tr class="row100 head">';
 										 	foreach ($row as $key => $value) {
 												echo '<td class = "cell100 column"'.$c.'>'.$value.'</th>';
+												$c = $c + 1;
 											}
 											echo '</tr>';
 										}
