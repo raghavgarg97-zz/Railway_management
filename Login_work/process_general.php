@@ -49,7 +49,7 @@ include_once './includes/db_connect.php';
 										$table_header = '<thead> <tr class = "row100 head">';
 										$table_body = '';
 										$table_footer = '</tr> </thead>';
-										$idx = 1;
+										$idx = 2;
 
 										$sq = $_POST["general_query"];
 										$sq = 'SELECT * FROM STATIONS;';
@@ -66,11 +66,14 @@ include_once './includes/db_connect.php';
 										$table = $table_header.$table_body.$table_footer;
 										echo $table;	
 
-										// while ($row = $result->fetch_assoc()){
-										//  	foreach ($row as $key => $value) {
-											
-										// 	}
-										// }
+										
+										while ($row = $result->fetch_assoc()){
+											echo '<tr class="row100 head">';
+										 	foreach ($row as $key => $value) {
+												echo '<td class = "cell100 column"'.$c.'>'.$value.'</th>';
+											}
+											echo '</tr>';
+										}
 										
 							
 								?>
