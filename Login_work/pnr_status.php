@@ -52,8 +52,8 @@ include_once './includes/db_connect.php';
 					<div class="booking-form">
 						<div class="booking-bg">
 							<div class="form-header">
-								<h2>Welcome.</h2>
-								<p>Home Page</p>
+								<h2>PNR Status</h2>
+								<!-- <p>Home Page</p> -->
 							</div>
 						</div>
 						

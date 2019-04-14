@@ -109,54 +109,58 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							$sq='SELECT * FROM BOOKING WHERE PNR_no='.$PNR.';';
 							$result=$mysqli->query($sq);
 							$row = $result->fetch_assoc();
-							$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
-							$mysqli->query($sq);
+							if(!empty($row)){
+								$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
+								$mysqli->query($sq);
 
-							$Train_no=$row['Train_no'];
-							$source_no=$row['Source_station_no'];
-							$dest_no=$row['Destination_station_no'];
-							$date=$row['Boarding_Date'];
-							$coach=$row['Coach_Type'];
-							$status=$row['Booking_Status'];
+								$Train_no=$row['Train_no'];
+								$source_no=$row['Source_station_no'];
+								$dest_no=$row['Destination_station_no'];
+								$date=$row['Boarding_Date'];
+								$coach=$row['Coach_Type'];
+								$status=$row['Booking_Status'];
 
-							if($status == "CNF"){
-								cancel_normal($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
+								if($status == "CNF"){
+									cancel_normal($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
 
-								$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.';';
-								$result = $mysqli->query($sq);
-								while($row = $result->fetch_assoc()){
-									$seats=find_min_seats($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
-									if($seats!=0){
-										$sq='SELECT * FROM BOOKING WHERE PNR_no='.$row['PNR_no'].';';
-										$row1=$mysqli->query($sq);
+									$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.';';
+									$result = $mysqli->query($sq);
+									while($row = $result->fetch_assoc()){
+										$seats=find_min_seats($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
+										if($seats!=0){
+											$sq='SELECT * FROM BOOKING WHERE PNR_no='.$row['PNR_no'].';';
+											$row1=$mysqli->query($sq);
 
-										$sq='INSERT INTO BOOKING values('.$row['PNR_no'].','.$row1['Username'].','.$row1['Name'].','.$row1['Age'].','.$row1['DOB'].','.$row1['Gender'].','.$row1['Insurance_AV'].','.$row1['Train_no'].','.$row1['Coach_Type'].','.$row1['Source_station_no'].','.$row1['Destination_station_no'].','.$row1['Boarding_Date'].',CNF);';
-										$mysqli->query($sq);
-										
-										$wl = $row['WL_no'];
-										$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$row['PNR_no'].';';
-										$mysqli->query($sq);
+											$sq='INSERT INTO BOOKING values('.$row['PNR_no'].','.$row1['Username'].','.$row1['Name'].','.$row1['Age'].','.$row1['DOB'].','.$row1['Gender'].','.$row1['Insurance_AV'].','.$row1['Train_no'].','.$row1['Coach_Type'].','.$row1['Source_station_no'].','.$row1['Destination_station_no'].','.$row1['Boarding_Date'].',CNF);';
+											$mysqli->query($sq);
+											
+											$wl = $row['WL_no'];
+											$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$row['PNR_no'].';';
+											$mysqli->query($sq);
 
-										$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
-										$mysqli->query($sq);
+											$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
+											$mysqli->query($sq);
+										}
 									}
+								}
+								else{
+									$sq = 'SELECT WL_no FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND PNR_no='.$PNR.';';
+									$result = $mysqli->query($sq);
+									$row = $result->fetch_assoc();
+									$wl = $row['WL_no'];
+									
+									$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
+									$mysqli->query($sq);
+
+									$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
+									$mysqli->query($sq);
 								}
 							}
 							else{
-								$sq = 'SELECT WL_no FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND PNR_no='.$PNR.';';
-								$result = $mysqli->query($sq);
-								$row = $result->fetch_assoc();
-								$wl = $row['WL_no'];
-								
-								$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
-								$mysqli->query($sq);
+								echo "<script type='text/javascript'>alert('The PNR number : $PNR does not exist');</script>";
+							}	
 
-								$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
-								$mysqli->query($sq);
-							}
-
-
-						?>
+							?>
 						<form action="home.php?username=<?php echo $username;?>" method="post">
 							<div class="form-btn">
 								<button class="submit-btn">Go to Home Page</button>
