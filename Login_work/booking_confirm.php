@@ -142,7 +142,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									}
 									
 									$row3 = $row3 + 1;
-									$sq3='INSERT INTO BOOKING values("'.$row3.'","'.$username.'","'.$name.'",'.$age.',"'.$dob.'","'.$gen.'",1,"'.$Train_no.'","'.$coach.'","'.$source.'","'.$dest.'","'.$date.'","CNF");';
+									$sq3='INSERT INTO BOOKING values("'.$row3.'","'.$username.'","'.$name.'",'.$age.',"'.$dob.'","'.$gen.'",1,"'.$Train_no.'","'.$coach.'","'.$source_no.'","'.$dest_no.'","'.$date.'","CNF");';
 									
 									$mysqli->query($sq3);
 								}
@@ -169,7 +169,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									}
 									$row3 = $row3 + 1;
 
-									$sq3='INSERT INTO BOOKING values('.$row3.','.$username.','.$name.','.$age.','.$dob.','.$gen.','.$ins.','.$Train_no.','.$coach.','.$source.','.$dest.','.$date.',WL);';
+									$sq3='INSERT INTO BOOKING values('.$row3.','.$username.','.$name.','.$age.','.$dob.','.$gen.','.$ins.','.$Train_no.','.$coach.','.$source_no.','.$dest_no.','.$date.',WL);';
 									$mysqli->query($sq3);
 
 									$sq3 = 'INSERT INTO OVERALL_WAITING values('.$row3.', '.$Train_no.', '.$date.', '.$coach.', '.$row4.');';
