@@ -59,27 +59,22 @@ CREATE TABLE `BOOKING` (
   `Insurance_AV` int(11) DEFAULT NULL,
   `Train_no` int(11) DEFAULT NULL,
   `Coach_Type` varchar(10) DEFAULT NULL,
-  `Coach_no` int(11) DEFAULT NULL,
-  `Seat_no` int(11) DEFAULT NULL,
-  `Source_station_no` int(11) DEFAULT NULL,
-  `Destination_station_no` int(11) DEFAULT NULL,
+  `Source_station` varchar(10) DEFAULT NULL,
+  `Destination_station` varchar(10) DEFAULT NULL,
   `Boarding_Date` date DEFAULT NULL,
   `Booking_Status` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`PNR_no`),
   KEY `Coach_Type` (`Coach_Type`),
   KEY `Train_no` (`Train_no`),
-  KEY `Source_station_no` (`Source_station_no`),
-  KEY `Destination_station_no` (`Destination_station_no`),
   CONSTRAINT `BOOKING_ibfk_1` FOREIGN KEY (`Coach_Type`) REFERENCES `COACH_DETAILS` (`Coach_Type`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BOOKING_ibfk_2` FOREIGN KEY (`Train_no`) REFERENCES `TRAIN_INFO` (`Train_no`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BOOKING_ibfk_3` FOREIGN KEY (`Source_station_no`) REFERENCES `STATIONS` (`Station_no`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `BOOKING_ibfk_4` FOREIGN KEY (`Destination_station_no`) REFERENCES `STATIONS` (`Station_no`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `BOOKING_ibfk_2` FOREIGN KEY (`Train_no`) REFERENCES `TRAIN_INFO` (`Train_no`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `BOOKING`
 --
+
 
 LOCK TABLES `BOOKING` WRITE;
 /*!40000 ALTER TABLE `BOOKING` DISABLE KEYS */;
