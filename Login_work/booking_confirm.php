@@ -136,20 +136,34 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									$sq3 = 'SELECT MAX(PNR_no) AS MA FROM BOOKING;';
 									$result3 = $mysqli->query($sq3);
 									$row3 = $result3->fetch_assoc();
-									$row3 = $row3['MA'] + 1;
-									$sq3='INSERT INTO BOOKING values('.$row3.','.$username.','.$name.','.$age.','.$dob.','.$gen.','.$ins.','.$Train_no.','.$coach.','.$source.','.$dest.','.$date.',CNF);';
+									$row3 = $row3['MA'];
+									if ($row3==null){
+										$row3=0;
+									}
+									
+									$row3 = $row3 + 1;
+									$sq3='INSERT INTO BOOKING values("'.$row3.'","'.$username.'","'.$name.'",'.$age.',"'.$dob.'","'.$gen.'",1,"'.$Train_no.'","'.$coach.'","'.$source.'","'.$dest.'","'.$date.'","CNF");';
+									echo "<script type='text/javascript'>alert('".$sq3."');</script>";
 									$mysqli->query($sq3);
 								}
 								else{
 									$sq4 = 'SELECT MAX(WL_no) AS MA FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.';';
 									$result4 = $mysqli->query($sq4);
 									$row4 = $result4->fetch_assoc();
+									$row4=$row4['MA'];
+									if ($row4==null){
+										$row4=0;
+									}
 									$row4 = $row4['MA'] + 1;
 
 									$sq3 = 'SELECT MAX(PNR_no) AS MA FROM BOOKING';
 									$result3 = $mysqli->query($sq3);
 									$row3 = $result3->fetch_assoc();
-									$row3 = $row3['MA'] + 1;
+									$row3=$row3['MA'];
+									if ($row3==null){
+										$row3=0;
+									}
+									$row3 = $row3 + 1;
 
 									$sq3='INSERT INTO BOOKING values('.$row3.','.$username.','.$name.','.$age.','.$dob.','.$gen.','.$ins.','.$Train_no.','.$coach.','.$source.','.$dest.','.$date.',WL);';
 									$mysqli->query($sq3);
