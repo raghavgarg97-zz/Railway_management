@@ -106,40 +106,90 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 						<?php
 							$username = $_GET['username'];
 							$PNR = $_POST['PNR'];
-							$sq='SELECT * FROM BOOKING WHERE PNR_no='.$PNR.';';
+							$sq='SELECT * FROM BOOKING WHERE PNR_no='.$PNR.' and Username="'.$username.'";';
 							$result=$mysqli->query($sq);
 							$row = $result->fetch_assoc();
 							if(!empty($row)){
-								$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
-								$mysqli->query($sq);
-
+								
 								$Train_no=$row['Train_no'];
-								$source_no=$row['Source_station_no'];
-								$dest_no=$row['Destination_station_no'];
+								$source=$row['Source_station'];
+								$dest=$row['Destination_station'];
 								$date=$row['Boarding_Date'];
 								$coach=$row['Coach_Type'];
 								$status=$row['Booking_Status'];
+								
+								$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
+								$mysqli->query($sq);
+
+								$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
+								$mysqli->query($sq);
+
+								$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
+								(SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
+								SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$dest.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no.';';
+								$result = $mysqli->query($sq);
+								$row2=$result->fetch_assoc();									
+								$sq6='unlock tables;commit; ';
+								$mysqli->query($sq6);
+
+								$source_no=$row2["source_no"];
+								$dest_no=$row2["dest_no"];
+
+								
 
 								if($status == "CNF"){
 									cancel_normal($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
 
-									$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.';';
-									$result = $mysqli->query($sq);
-									while($row = $result->fetch_assoc()){
-										$seats=find_min_seats($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
+									$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = "'.$coach.'";';
+									$result3 = $mysqli->query($sq);
+									
+									while($row3 = $result3->fetch_assoc()){
+
+										$pnr = $row3['PNR_no'];
+										$wl = $row['WL_no'];
+
+
+										$sq='SELECT * FROM BOOKING WHERE PNR_no='.$pnr.';';
+										$result4=$mysqli->query($sq);
+										$row4= $result4->fetch_assoc();
+
+										$Train_no2=$row4['Train_no'];
+										$source2=$row4['Source_station'];
+										$dest2=$row4['Destination_station'];
+										$date2=$row4['Boarding_Date'];
+										$coach2=$row4['Coach_Type'];
+
+										$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
+										$mysqli->query($sq);
+
+										$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
+										(SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
+										SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$dest.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no.';';
+										$result5 = $mysqli->query($sq);
+										$row5=$result5->fetch_assoc();									
+										$sq6='unlock tables;commit; ';
+										$mysqli->query($sq6);
+
+										$source_no2=$row5["source_no"];
+										$dest_no2=$row5["dest_no"];
+										
+
+										$seats=find_min_seats($Train_no2,$source_no2,$dest_no2,$date2,$coach2,$mysqli);
 										if($seats!=0){
-											$sq='SELECT * FROM BOOKING WHERE PNR_no='.$row['PNR_no'].';';
-											$row1=$mysqli->query($sq);
+											// $sq='SELECT * FROM BOOKING WHERE PNR_no='.$row['PNR_no'].';';
+											// $row1=$mysqli->query($sq);
 
-											$sq='INSERT INTO BOOKING values('.$row['PNR_no'].','.$row1['Username'].','.$row1['Name'].','.$row1['Age'].','.$row1['DOB'].','.$row1['Gender'].','.$row1['Insurance_AV'].','.$row1['Train_no'].','.$row1['Coach_Type'].','.$row1['Source_station_no'].','.$row1['Destination_station_no'].','.$row1['Boarding_Date'].',CNF);';
+											$sq='UPDATE BOOKING SET Booking_Status="CNF" where PNR_no='.$pnr.';';
 											$mysqli->query($sq);
+
+											book_normal($Train_no2,$source_no2,$dest_no2,$date2,$coach2,$mysqli);
 											
-											$wl = $row['WL_no'];
-											$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$row['PNR_no'].';';
+											$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$pnr.';';
 											$mysqli->query($sq);
 
-											$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
+											$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no2.' AND Dates = '.$date2.'AND Coach_Type = '.$coach2.' AND WL_no >'.$wl.';';
 											$mysqli->query($sq);
+											echo "<script type='text/javascript'>alert('Your Ticket has been cancelled');</script>";
 										}
 									}
 								}
@@ -157,7 +207,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								}
 							}
 							else{
-								echo "<script type='text/javascript'>alert('The PNR number : $PNR does not exist');</script>";
+								echo "<script type='text/javascript'>alert('The PNR number : $PNR does not exist or You are not eligible to Cancel this ticket');</script>";
 							}	
 
 							?>

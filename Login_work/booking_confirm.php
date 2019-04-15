@@ -113,14 +113,13 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							$mysqli->query($sq);
 
 							$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
-							(SELECT Train_no,Sequence_number,Day_offset,Distance,Departure_time from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
-							SELECT Train_no,Sequence_number,Day_offset,Distance,Arrival_time from RAILWAY_PATH,STATIONS where Station_name="'.$dest.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no.';';
+							(SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
+							SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$dest.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no.';';
 
 							$result = $mysqli->query($sq);
 								
 							$sq6='unlock tables;commit; ';
 							$mysqli->query($sq6);
-
 							$row3=-1;
 
 							while ($row = $result->fetch_assoc()){
@@ -142,7 +141,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									}
 									
 									$row3 = $row3 + 1;
-									$sq3='INSERT INTO BOOKING values("'.$row3.'","'.$username.'","'.$name.'",'.$age.',"'.$dob.'","'.$gen.'",1,"'.$Train_no.'","'.$coach.'","'.$source_no.'","'.$dest_no.'","'.$date.'","CNF");';
+									$sq3='INSERT INTO BOOKING values("'.$row3.'","'.$username.'","'.$name.'",'.$age.',"'.$dob.'","'.$gen.'",1,'.$Train_no.',"'.$coach.'","'.$source.'","'.$dest.'","'.$date.'","CNF");';
 									
 									$mysqli->query($sq3);
 								}
@@ -169,10 +168,10 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									}
 									$row3 = $row3 + 1;
 
-									$sq3='INSERT INTO BOOKING values('.$row3.','.$username.','.$name.','.$age.','.$dob.','.$gen.','.$ins.','.$Train_no.','.$coach.','.$source_no.','.$dest_no.','.$date.',WL);';
+									$sq3='INSERT INTO BOOKING values("'.$row3.'","'.$username.'","'.$name.'",'.$age.',"'.$dob.'","'.$gen.'",1,'.$Train_no.',"'.$coach.'","'.$source.'","'.$dest.'","'.$date.'","WL");';
 									$mysqli->query($sq3);
 
-									$sq3 = 'INSERT INTO OVERALL_WAITING values('.$row3.', '.$Train_no.', '.$date.', '.$coach.', '.$row4.');';
+									$sq3 = 'INSERT INTO OVERALL_WAITING values('.$row3.', '.$Train_no.',"'.$date.'","'.$coach.'",'.$row4.');';
 									$mysqli->query($sq3);
 								}
 								$sq6='unlock tables;commit; ';
