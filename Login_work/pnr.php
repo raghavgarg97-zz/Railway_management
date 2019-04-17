@@ -81,8 +81,7 @@
 								</div>
 							</div>
 							<div class="form-btn">
-								<button class="submit-btn" onClick="alert('Are you sure you want to cancel your ticket?')">Cancel Ticket</button>
-							</div>
+								<button class="submit-btn" onClick="return  confirm('Are you sure you want to cancel your ticket?')">Cancel Ticket</button>
 						</form>
 					</div>
 				</div>

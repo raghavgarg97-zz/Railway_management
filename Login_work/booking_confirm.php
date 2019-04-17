@@ -147,10 +147,10 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								}
 								else{
 									
-									$sq4 = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' FOR UPDATE;';
+									$sq4 = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = '.$coach.' FOR UPDATE;';
 									$mysqli->query($sq4);
 
-									$sq4 = 'SELECT MAX(WL_no) AS MA FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.';';
+									$sq4 = 'SELECT MAX(WL_no) AS MA FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = '.$coach.';';
 									$result4 = $mysqli->query($sq4);
 									$row4 = $result4->fetch_assoc();
 									$row4=$row4['MA'];

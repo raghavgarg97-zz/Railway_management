@@ -134,7 +134,6 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 								$source_no=$row2["source_no"];
 								$dest_no=$row2["dest_no"];
-
 								
 
 								if($status == "CNF"){
@@ -187,23 +186,25 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 											$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$pnr.';';
 											$mysqli->query($sq);
 
-											$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no2.' AND Dates = '.$date2.'AND Coach_Type = '.$coach2.' AND WL_no >'.$wl.';';
+											$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no2.' AND Dates = "'.$date2.'" AND Coach_Type = '.$coach2.' AND WL_no >'.$wl.';';
 											$mysqli->query($sq);
 											echo "<script type='text/javascript'>alert('Your Ticket has been cancelled');</script>";
 										}
 									}
 								}
 								else{
-									$sq = 'SELECT WL_no FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND PNR_no='.$PNR.';';
-									$result = $mysqli->query($sq);
-									$row = $result->fetch_assoc();
-									$wl = $row['WL_no'];
+									/*$sq3 = 'SELECT WL_no FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = '.$coach.' AND PNR_no='.$PNR.';';*/
+									$sq3 = 'SELECT WL_no FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
+									$result3 = $mysqli->query($sq3);
+									$row3 = $result3->fetch_assoc();
+									$wl3 = $row3['WL_no'];
+									#echo "<script type='text/javascript'>alert('Your WL Number is $wl10 ');</script>";
 									
-									$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
-									$mysqli->query($sq);
+									$sq3='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
+									$mysqli->query($sq3);
 
-									$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = '.$date.'AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
-									$mysqli->query($sq);
+									$sq3='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'"AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
+									$mysqli->query($sq3);
 								}
 							}
 							else{
