@@ -106,6 +106,10 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 						<?php
 							$username = $_GET['username'];
 							$PNR = $_POST['PNR'];
+							
+							$sq='start Transaction;lock tables BOOKING write;';
+							$mysqli->query($sq);
+
 							$sq='SELECT * FROM BOOKING WHERE PNR_no='.$PNR.' and Username="'.$username.'";';
 							$result=$mysqli->query($sq);
 							$row = $result->fetch_assoc();
@@ -121,7 +125,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
 								$mysqli->query($sq);
 
-								$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
+								$sq='lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
 								$mysqli->query($sq);
 
 								$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
@@ -129,15 +133,21 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$dest.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no.';';
 								$result = $mysqli->query($sq);
 								$row2=$result->fetch_assoc();									
-								$sq6='unlock tables;commit; ';
-								$mysqli->query($sq6);
+								/*$sq6='unlock tables;commit; ';
+								$mysqli->query($sq6);*/
 
 								$source_no=$row2["source_no"];
 								$dest_no=$row2["dest_no"];
 								
 
 								if($status == "CNF"){
+									$sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
+									$mysqli->query($sq);
+									
 									cancel_normal($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
+
+									$sq = 'lock tables OVERALL_WAITING write;';
+									$mysqli->query($sq);
 
 									$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = "'.$coach.'";';
 									$result3 = $mysqli->query($sq);
@@ -158,16 +168,14 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 										$date2=$row4['Boarding_Date'];
 										$coach2=$row4['Coach_Type'];
 
-										$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
-										$mysqli->query($sq);
 
 										$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
 										(SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
 										SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$dest.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no.';';
 										$result5 = $mysqli->query($sq);
 										$row5=$result5->fetch_assoc();									
-										$sq6='unlock tables;commit; ';
-										$mysqli->query($sq6);
+										/*$sq6='unlock tables;commit; ';
+										$mysqli->query($sq6);*/
 
 										$source_no2=$row5["source_no"];
 										$dest_no2=$row5["dest_no"];
@@ -194,6 +202,10 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								}
 								else{
 									/*$sq3 = 'SELECT WL_no FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = '.$coach.' AND PNR_no='.$PNR.';';*/
+									
+									$sq3 = 'lock tables OVERALL_WAITING write;';
+									$mysqli->query($sq3);
+
 									$sq3 = 'SELECT WL_no FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
 									$result3 = $mysqli->query($sq3);
 									$row3 = $result3->fetch_assoc();
@@ -209,7 +221,9 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							}
 							else{
 								echo "<script type='text/javascript'>alert('The PNR number : $PNR does not exist or You are not eligible to Cancel this ticket');</script>";
-							}	
+							}
+							$sq='unlock tables;commit; ';
+							$mysqli->query($s3);	
 
 							?>
 						<form action="home.php?username=<?php echo $username;?>" method="post">
