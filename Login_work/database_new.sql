@@ -174,6 +174,19 @@ FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELET
 FOREIGN key(PNR_no) REFERENCES BOOKING(PNR_no) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE TT(
+    Emp_id int ,
+    Train_no int,
+    Dates DATE,
+    Source_station_no int,
+    Destination_station_no int,
+    PRIMARY KEY(Emp_id,Train_no,Dates),
+    FOREIGN KEY(Emp_id) REFERENCES EMPLOYEE(Emp_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN key(Source_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN key(Destination_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 CREATE TABLE EMPLOYEE(
     Emp_id int PRIMARY KEY,
     Designation varchar(25),
@@ -199,6 +212,17 @@ CREATE TABLE TRAIN_DELAY(
     Avg_delay_mins int CHECK(Avg_delay_mins = ((Last_delay_mins+Sec_delay_mins+Third_delay_mins)/3)),
     FOREIGN KEY(Station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE LAYOUT_DETAILS(
+    Layout_no int PRIMARY KEY,
+    Seat_no int,
+    Seat_Type varchar(10) CHECK(Seat_Type IN ('Lower','Middle','Upper','Side Lower','Side Upper','Window','Center','Aisle'))
+);
+
+CREATE TABLE CHART(
+    PNR_no int PRIMARY KEY,
+    Seat_no int
 );
 
 DELIMITER //
