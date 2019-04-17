@@ -223,7 +223,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								echo "<script type='text/javascript'>alert('The PNR number : $PNR does not exist or You are not eligible to Cancel this ticket');</script>";
 							}
 							$sq='unlock tables;commit; ';
-							$mysqli->query($s3);	
+							$mysqli->query($sq);	
 
 							?>
 						<form action="home.php?username=<?php echo $username;?>" method="post">
