@@ -80,8 +80,6 @@ Layout_no int,
 Total_available_seats int
 );
 
-
-
 CREATE TABLE TRAIN_INFO(
 Train_no int PRIMARY KEY,
 Train_name varchar(30),
@@ -156,6 +154,7 @@ Gender varchar(10) CHECK(Gender in ('M','F','Other')),
 Insurance_AV int,
 Train_no int,
 Coach_Type varchar(10),
+Seat_pref varchar(10),
 Source_station_no int,
 Destination_station_no int,
 Boarding_Date DATE,
@@ -184,14 +183,26 @@ CREATE TABLE EMPLOYEE(
     Name varchar(25),
     Age int CHECK(Age>=18),
     Gender varchar(5) CHECK(Gender in ('M','F','Other'))
-)
+);
 
 CREATE TABLE STATION_EMPLOYEE(
     Emp_id int PRIMARY KEY,
     Station_no int,
     FOREIGN KEY(Station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(Emp_id) REFERENCES EMPLOYEE(Emp_id) ON UPDATE CASCADE ON DELETE CASCADE
-)
+);
+
+CREATE TABLE TRAIN_DELAY(
+    Train_no int,
+    Station_no int,
+    PRIMARY KEY(Train_no,Station_no),
+    Last_delay_mins int,
+    Sec_delay_mins int,
+    Third_delay_mins int,
+    Avg_delay_mins int CHECK(Avg_delay_mins = ((Last_delay_mins+Sec_delay_mins+Third_delay_mins)/3)),
+    FOREIGN KEY(Station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE
+);
 
 DELIMITER //
 CREATE TRIGGER railway_graph_check BEFORE INSERT ON RAILWAY_PATH
