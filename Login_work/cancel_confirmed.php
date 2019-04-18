@@ -107,8 +107,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							$username = $_GET['username'];
 							$PNR = $_POST['PNR'];
 							
-							// $sq='START TRANSACTION;LOCK TABLES BOOKING WRITE;';
-							// $mysqli->query($sq);
+							$sq='START TRANSACTION;SELECT * FROM BOOKING FOR UPDATE;SELECT * FROM RAILWAY_PATH FOR UPDATE;SELECT * FROM STATIONS FOR UPDATE;SELECT * FROM TRAIN_INFO FOR UPDATE;SELECT * FROM OVERALL_WAITING FOR UPDATE';
+							$mysqli->query($sq);
 
 							$sq='SELECT * FROM BOOKING WHERE PNR_no='.$PNR.' and Username="'.$username.'";';
 							$result=$mysqli->query($sq);
@@ -143,7 +143,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								if($status == "CNF"){
 									// $sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
 									// $mysqli->query($sq);
-									$sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.';';
+									$sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR SHARE;';
 									$mysqli->query($sq);
 									
 									cancel_normal($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
@@ -227,8 +227,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							else{
 								echo "<script type='text/javascript'>alert('The PNR number : $PNR does not exist or You are not eligible to Cancel this ticket');</script>";
 							}
-							// $sq='unlock tables;COMMIT; ';
-							// $mysqli->query($sq);	
+							$sq='COMMIT; ';
+							$mysqli->query($sq);	
 
 							?>
 						<form action="home.php?username=<?php echo $username;?>" method="post">
