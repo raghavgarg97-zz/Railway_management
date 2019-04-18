@@ -109,7 +109,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							$gen = $_POST['sel4'];
 							$ins = $_POST['sel5'];
 
-							$sq='start Transaction;lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
+							$sq='START TRANSACTION;LOCK TABLES RAILWAY_PATH READ;LOCK TABLES STATIONS READ;LOCK TABLES TRAIN_INFO READ; ';
 							$mysqli->query($sq);
 
 							$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
@@ -118,7 +118,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 							$result = $mysqli->query($sq);
 								
-							$sq6='unlock tables;commit; ';
+							$sq6='unlock tables;COMMIT; ';
 							$mysqli->query($sq6);
 							$row3=-1;
 
@@ -126,7 +126,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								$source_no=$row["source_no"];
 								$dest_no=$row["dest_no"];
 
-								$sq2='start Transaction;lock tables BOOKING write;select * from RAILWAY_PATH where Train_no='.$Train_no.' FOR SHARE;select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
+								$sq2='START TRANSACTION;LOCK TABLES BOOKING write;select * from RAILWAY_PATH where Train_no='.$Train_no.' FOR SHARE;select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
 								$mysqli->query($sq2);
 
 								$seats=find_min_seats($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
@@ -146,11 +146,13 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									$mysqli->query($sq3);
 								}
 								else{
-									
-									$sq4 = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = '.$coach.' FOR UPDATE;';
+									// echo "<script type='text/javascript'>alert('enter');</script>";
+
+									$sq4 = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = "'.$coach.'" FOR UPDATE;';
 									$mysqli->query($sq4);
 
-									$sq4 = 'SELECT MAX(WL_no) AS MA FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = '.$coach.';';
+									$sq4 = 'SELECT MAX(WL_no) AS MA FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = "'.$coach.'";';
+									// echo "<script type='text/javascript'>alert('$sq4');</script>";
 									$result4 = $mysqli->query($sq4);
 									$row4 = $result4->fetch_assoc();
 									$row4=$row4['MA'];
@@ -158,6 +160,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 										$row4=0;
 									}
 									$row4 = $row4['MA'] + 1;
+									// echo "<script type='text/javascript'>alert('$row4');</script>";
 
 									$sq3 = 'SELECT MAX(PNR_no) AS MA FROM BOOKING';
 									$result3 = $mysqli->query($sq3);
@@ -174,7 +177,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									$sq3 = 'INSERT INTO OVERALL_WAITING values('.$row3.', '.$Train_no.',"'.$date.'","'.$coach.'",'.$row4.');';
 									$mysqli->query($sq3);
 								}
-								$sq6='unlock tables;commit; ';
+								$sq6='unlock tables;COMMIT; ';
 								$mysqli->query($sq6);
 						}
 						echo "<script type='text/javascript'>alert('PNR number is $row3');</script>";

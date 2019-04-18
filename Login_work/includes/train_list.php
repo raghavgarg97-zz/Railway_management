@@ -6,6 +6,7 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 	$mysqli->query($sq2);
 
 	$sq='Select Station_no from  RAILWAY_PATH where Train_no='.$train_no.' and Sequence_number BETWEEN '.$source_no.' and '.($dest_no-1).';';
+
 	$result = $mysqli->query($sq);
 
 	
@@ -13,11 +14,15 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 	$min=1000;
 	while ($row = $result->fetch_assoc()){
 		$sq2='SELECT Total_available_seats from TICKET_AVAILABLITY where Train_no='.$train_no.' and Station_no='.$row["Station_no"].' and Date="'.$date.'" and Coach_Type="'.$coach.'";';
+		// echo "<script type='text/javascript'>alert('$sq2');</script>";
 		$result2 = $mysqli->query($sq2);
 		$row2 = $result2->fetch_assoc();
 		if ($row2 == false){
-			return false;
+			return -1;
 		}
+		// if ($train_no==12003){
+		// 	echo "<script type='text/javascript'>alert('".$row2["Total_available_seats"]."');</script>";
+		// }
 		if ($row2["Total_available_seats"]<$min){
 			$min=$row2["Total_available_seats"];
 		}
@@ -25,6 +30,9 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 	$sq2='unlock tables;commit;';
 	$mysqli->query($sq2);
+	// if ($train_no==12003){
+	// 		echo "<script type='text/javascript'>alert('$min');</script>";
+	// 	}
 	return $min;
 
 }
@@ -108,6 +116,7 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 											 	$time1=$row["Dept_time"];
 											 	$time2=$row["Arr_time"];
 
+
 											 	$sq2='SELECT '.$day.'_avail from TRAIN_INFO where Train_no='.$train_no.';';
 											 	$result2 = $mysqli->query($sq2);
 											 	$row2 = $result2->fetch_assoc();
@@ -116,13 +125,29 @@ function find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 											 		$sq3='SELECT price from TRAIN_SCHEDULE where Train_no='.$train_no.' and Coach_Type="'.$coach.'";';
 												 	$result3 = $mysqli->query($sq3);
 												 	$row3 = $result3->fetch_assoc();
+
 												 	$seats=find_min_seats($train_no,$source_no,$dest_no,$date,$coach,$mysqli);
-												 	if ($seats == false){
-												 		echo "<script type='text/javascript'>alert('No such Coach for given Train');</script>";
-												 	}elseif($seats<0){
-												 		//Upadte $seats to show Waiting list no' for train
+												 	if ($seats == -1){
+												 		// echo "<script type='text/javascript'>alert('No such Coach for given Train');</script>";
 												 	}else{
 												 	$c=$c+1;
+												 	if ($seats==0){
+
+												 		$sq='start Transaction;lock tables OVERALL_WAITING read;';
+														$mysqli->query($sq);
+														$sq5 = 'SELECT MAX(WL_no) as max FROM OVERALL_WAITING WHERE Train_no='.$train_no.';';
+														$result5 = $mysqli->query($sq5);
+														$row5 = $result5->fetch_assoc();
+														$seats = $row5['max'];
+														$sq='unlock tables;commit;';
+														$mysqli->query($sq);
+														if ($seats==null){
+															$seats="WL/1";
+														}else{
+															$seats='WL/'.($seats+1);
+														}
+
+												 	}
 												    echo '<tr class="row100 head">';
 													echo '<td class="cell100 column2">'.$train_no.'</th>';
 													echo '<td class="cell100 column2">'.$train_name.'</th>';

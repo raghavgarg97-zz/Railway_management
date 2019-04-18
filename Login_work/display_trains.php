@@ -66,7 +66,7 @@
 										    <option>CNB</option>
 										    <option>NDLS</option>
 										    <option>GZB</option>
-										    <option>Etawah</option>
+										    <option>LJN</option>
 										  </select>
 									</div>
 								</div>
@@ -77,7 +77,7 @@
 										    <option>CNB</option>
 										    <option>NDLS</option>
 										    <option>GZB</option>
-										    <option>Etawah</option>
+										    <option>LJN</option>
 										  </select>
 									</div>
 								</div>

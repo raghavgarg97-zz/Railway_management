@@ -107,8 +107,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							$username = $_GET['username'];
 							$PNR = $_POST['PNR'];
 							
-							$sq='start Transaction;lock tables BOOKING write;';
-							$mysqli->query($sq);
+							// $sq='START TRANSACTION;LOCK TABLES BOOKING WRITE;';
+							// $mysqli->query($sq);
 
 							$sq='SELECT * FROM BOOKING WHERE PNR_no='.$PNR.' and Username="'.$username.'";';
 							$result=$mysqli->query($sq);
@@ -125,8 +125,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
 								$mysqli->query($sq);
 
-								$sq='lock tables RAILWAY_PATH READ;lock tables STATIONS read;lock tables TRAIN_INFO READ; ';
-								$mysqli->query($sq);
+								// $sq='LOCK TABLES RAILWAY_PATH READ;LOCK TABLES STATIONS read;LOCK TABLES TRAIN_INFO READ; ';
+								// $mysqli->query($sq);
 
 								$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
 								(SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
@@ -141,16 +141,19 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								
 
 								if($status == "CNF"){
-									$sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
+									// $sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
+									// $mysqli->query($sq);
+									$sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.';';
 									$mysqli->query($sq);
 									
 									cancel_normal($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
 
-									$sq = 'lock tables OVERALL_WAITING write;';
-									$mysqli->query($sq);
+									// $sq = 'lock tables OVERALL_WAITING write;';
+									// $mysqli->query($sq);
 
 									$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = "'.$coach.'";';
 									$result3 = $mysqli->query($sq);
+
 									
 									while($row3 = $result3->fetch_assoc()){
 
@@ -159,8 +162,9 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 
 										$sq='SELECT * FROM BOOKING WHERE PNR_no='.$pnr.';';
-										$result4=$mysqli->query($sq);
-										$row4= $result4->fetch_assoc();
+										// echo "<script type='text/javascript'>alert('$sq');</script>";
+										$resultn=$mysqli->query($sq);
+										$row4= $resultn->fetch_assoc();
 
 										$Train_no2=$row4['Train_no'];
 										$source2=$row4['Source_station'];
@@ -182,6 +186,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 										
 
 										$seats=find_min_seats($Train_no2,$source_no2,$dest_no2,$date2,$coach2,$mysqli);
+										echo "<script type='text/javascript'>alert('$seats');</script>";
 										if($seats!=0){
 											// $sq='SELECT * FROM BOOKING WHERE PNR_no='.$row['PNR_no'].';';
 											// $row1=$mysqli->query($sq);
@@ -203,8 +208,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								else{
 									/*$sq3 = 'SELECT WL_no FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = '.$coach.' AND PNR_no='.$PNR.';';*/
 									
-									$sq3 = 'lock tables OVERALL_WAITING write;';
-									$mysqli->query($sq3);
+									// $sq3 = 'lock tables OVERALL_WAITING write;';
+									// $mysqli->query($sq3);
 
 									$sq3 = 'SELECT WL_no FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
 									$result3 = $mysqli->query($sq3);
@@ -222,8 +227,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							else{
 								echo "<script type='text/javascript'>alert('The PNR number : $PNR does not exist or You are not eligible to Cancel this ticket');</script>";
 							}
-							$sq='unlock tables;commit; ';
-							$mysqli->query($sq);	
+							// $sq='unlock tables;COMMIT; ';
+							// $mysqli->query($sq);	
 
 							?>
 						<form action="home.php?username=<?php echo $username;?>" method="post">
