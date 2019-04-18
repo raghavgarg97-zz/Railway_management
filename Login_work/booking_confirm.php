@@ -109,7 +109,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 							$gen = $_POST['sel4'];
 							$ins = $_POST['sel5'];
 
-							$sq='START TRANSACTION;LOCK TABLES RAILWAY_PATH READ;LOCK TABLES STATIONS READ;LOCK TABLES TRAIN_INFO READ; ';
+							$sq='START TRANSACTION;SELECT * FROM RAILWAY_PATH FOR SHARE;SELECT * FROM STATIONS FOR SHARE;SELECT * FROM TRAIN_INFO FOR SHARE; ';
 							$mysqli->query($sq);
 
 							$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
@@ -118,7 +118,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 							$result = $mysqli->query($sq);
 								
-							$sq6='unlock tables;COMMIT; ';
+							#$sq6='unlock tables;COMMIT; ';
+							$sq6='COMMIT; ';
 							$mysqli->query($sq6);
 							$row3=-1;
 
@@ -126,7 +127,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								$source_no=$row["source_no"];
 								$dest_no=$row["dest_no"];
 
-								$sq2='START TRANSACTION;LOCK TABLES BOOKING write;select * from RAILWAY_PATH where Train_no='.$Train_no.' FOR SHARE;select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
+								$sq2='START TRANSACTION;SELECT * FROM BOOKING FOR UPDATE;select * from RAILWAY_PATH where Train_no='.$Train_no.' FOR SHARE;select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
 								$mysqli->query($sq2);
 
 								$seats=find_min_seats($Train_no,$source_no,$dest_no,$date,$coach,$mysqli);
@@ -177,7 +178,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									$sq3 = 'INSERT INTO OVERALL_WAITING values('.$row3.', '.$Train_no.',"'.$date.'","'.$coach.'",'.$row4.');';
 									$mysqli->query($sq3);
 								}
-								$sq6='unlock tables;COMMIT; ';
+								#$sq6='unlock tables;COMMIT; ';
+								sq6='COMMIT; ';
 								$mysqli->query($sq6);
 						}
 						echo "<script type='text/javascript'>alert('PNR number is $row3');</script>";
