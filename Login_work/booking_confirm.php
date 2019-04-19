@@ -179,7 +179,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									$mysqli->query($sq3);
 								}
 								#$sq6='unlock tables;COMMIT; ';
-								sq6='COMMIT; ';
+								$sq6='COMMIT; ';
 								$mysqli->query($sq6);
 						}
 						echo "<script type='text/javascript'>alert('PNR number is $row3');</script>";

@@ -122,8 +122,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								$coach=$row['Coach_Type'];
 								$status=$row['Booking_Status'];
 								
-								$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
-								$mysqli->query($sq);
+								
 
 								// $sq='LOCK TABLES RAILWAY_PATH READ;LOCK TABLES STATIONS read;LOCK TABLES TRAIN_INFO READ; ';
 								// $mysqli->query($sq);
@@ -141,6 +140,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 								
 
 								if($status == "CNF"){
+									$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
+									$mysqli->query($sq);
 									// $sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR UPDATE;';
 									// $mysqli->query($sq);
 									$sq='select * from TICKET_AVAILABLITY where Train_no='.$Train_no.' FOR SHARE;';
@@ -199,7 +200,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 											$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$pnr.';';
 											$mysqli->query($sq);
 
-											$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no2.' AND Dates = "'.$date2.'" AND Coach_Type = '.$coach2.' AND WL_no >'.$wl.';';
+											$sq='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no2.' AND Dates = "'.$date2.'" AND Coach_Type ="'.$coach2.'" AND WL_no >'.$wl.';';
 											$mysqli->query($sq);
 											echo "<script type='text/javascript'>alert('Your Ticket has been cancelled');</script>";
 										}
@@ -215,13 +216,16 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									$result3 = $mysqli->query($sq3);
 									$row3 = $result3->fetch_assoc();
 									$wl3 = $row3['WL_no'];
-									#echo "<script type='text/javascript'>alert('Your WL Number is $wl10 ');</script>";
+									//echo "<script type='text/javascript'>alert('Your WL Number is $wl3 ');</script>";
+									$sq='DELETE FROM BOOKING WHERE PNR_no='.$PNR.';';
+									$mysqli->query($sq);
 									
 									$sq3='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$PNR.';';
 									$mysqli->query($sq3);
 
-									$sq3='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'"AND Coach_Type = '.$coach.' AND WL_no >'.$wl.';';
-									$mysqli->query($sq3);
+									$sq3='UPDATE OVERALL_WAITING SET WL_no=WL_no-1 WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = "'.$coach.'" AND WL_no >'.$wl3.';';
+									//echo "<script type='text/javascript'>alert('$sq3 ');</script>";
+									 $mysqli->query($sq3);
 								}
 							}
 							else{

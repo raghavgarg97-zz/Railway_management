@@ -77,10 +77,10 @@ include_once './includes/db_connect.php';
 									
 
 									$sq = 'SELECT * FROM OVERALL_WAITING WHERE Train_no = '.$Train_no.' AND Dates = "'.$date.'" AND Coach_Type = "'.$coach.'" AND PNR_no='.$PNR.';';
-									echo "<script type='text/javascript'>alert('$sq');</script>";
+									// echo "<script type='text/javascript'>alert('$sq');</script>";
 									$result = $mysqli->query($sq);
 									$row = $result->fetch_assoc();
-									$WL = $row['Wl_no'];
+									$WL = $row['WL_no'];
 									echo "<script type='text/javascript'>alert('Your waiting list number is $WL');</script>";
 								}
 							}
