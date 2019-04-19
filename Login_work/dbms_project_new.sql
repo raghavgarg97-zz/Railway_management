@@ -401,6 +401,30 @@ INSERT INTO `TRAIN_SCHEDULE` VALUES (12003,'CC',3,1),(12003,'EC',3,1),(12004,'CC
 /*!40000 ALTER TABLE `TRAIN_SCHEDULE` ENABLE KEYS */;
 UNLOCK TABLES;
 
+CREATE TABLE TT(
+    Emp_id int ,
+    Train_no int,
+    Dates DATE,
+    Source_station_no int,
+    Destination_station_no int,
+    PRIMARY KEY(Emp_id,Train_no,Dates),
+    FOREIGN KEY(Emp_id) REFERENCES EMPLOYEE(Emp_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN key(Source_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN key(Destination_station_no) REFERENCES STATIONS(Station_no) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN key(Train_no) REFERENCES TRAIN_INFO(Train_no) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE LAYOUT_DETAILS(
+    Layout_no int PRIMARY KEY,
+    Seat_no int,
+    Seat_Type varchar(10) CHECK(Seat_Type IN ('Lower','Middle','Upper','Side Lower','Side Upper','Window','Center','Aisle'))
+);
+
+CREATE TABLE CHART(
+    PNR_no int PRIMARY KEY,
+    Seat_no int
+);
+
 --
 -- Table structure for table `login_attempts`
 --

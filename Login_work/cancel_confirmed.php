@@ -159,7 +159,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 									while($row3 = $result3->fetch_assoc()){
 
 										$pnr = $row3['PNR_no'];
-										$wl = $row['WL_no'];
+										$wl = $row3['WL_no'];
 
 
 										$sq='SELECT * FROM BOOKING WHERE PNR_no='.$pnr.';';
@@ -175,8 +175,8 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 
 										$sq='SELECT T.Sequence_number as source_no,S.Sequence_number as dest_no FROM 
-										(SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$source.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
-										SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$dest.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no.';';
+										(SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$source2.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)T,(
+										SELECT Sequence_number,Train_no from RAILWAY_PATH,STATIONS where Station_name="'.$dest2.'"  and RAILWAY_PATH.Station_no=STATIONS.Station_no)S,TRAIN_INFO where T.Train_no=S.Train_no and T.Sequence_number <S.Sequence_number and T.Train_no=TRAIN_INFO.Train_no and T.Train_no='.$Train_no2.';';
 										$result5 = $mysqli->query($sq);
 										$row5=$result5->fetch_assoc();									
 										/*$sq6='unlock tables;commit; ';
@@ -187,7 +187,7 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 										
 
 										$seats=find_min_seats($Train_no2,$source_no2,$dest_no2,$date2,$coach2,$mysqli);
-										echo "<script type='text/javascript'>alert('$seats');</script>";
+										// echo "<script type='text/javascript'>alert('min seats = $seats,$source2,$dest2,$pnr,$wl');</script>";
 										if($seats!=0){
 											// $sq='SELECT * FROM BOOKING WHERE PNR_no='.$row['PNR_no'].';';
 											// $row1=$mysqli->query($sq);
@@ -197,6 +197,12 @@ function book_normal($train_no,$source_no,$dest_no,$date,$coach,$mysqli){
 
 											book_normal($Train_no2,$source_no2,$dest_no2,$date2,$coach2,$mysqli);
 											
+											$sq='SELECT WL_no from OVERALL_WAITING WHERE PNR_no='.$pnr.';';
+											$result9=$mysqli->query($sq);
+											$row9=$result9->fetch_assoc();
+											$wl=$row9['WL_no'];
+
+
 											$sq='DELETE FROM OVERALL_WAITING WHERE PNR_no='.$pnr.';';
 											$mysqli->query($sq);
 
